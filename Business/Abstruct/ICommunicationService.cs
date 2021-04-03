@@ -11,7 +11,7 @@ namespace Business.Abstruct
         IDataResult<List<Communication>> GetAll();
         IDataResult<Communication> GetById(int id);
         IResult Add(Communication communication);
-        IResult Delete(Communication communication);
+        IResult Delete(int id);
         IResult Update(Communication communication);
     }
 }

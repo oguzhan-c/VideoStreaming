@@ -5,10 +5,11 @@ using Core.DataAcces.EntitiyFramework;
 using Core.Entities.Concrute;
 using DataAccess.Abstruct;
 using DataAccess.Concrete.EntityFremavork.DatabaseContexts;
+using Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFremavork
 {
-    public class EfUserDal : EfEntitiyRepositoryBase<User, VideStreamingContext>, IUserDal
+    public class EfChannelPhotoDal : EfEntitiyRepositoryBase<ChannelPhoto, VideoStreamingContext>, IChannelPhotoDal
     {
 
     }

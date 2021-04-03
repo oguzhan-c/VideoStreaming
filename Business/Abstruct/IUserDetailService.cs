@@ -11,7 +11,7 @@ namespace Business.Abstruct
     {
         IDataResult<List<UserDetail>> GetAll();
         IResult Add(UserDetail userDetail);
-        IResult Delete(UserDetail userDetail);
+        IResult Delete(int id);
         IResult Update(UserDetail userDetail);
         IDataResult<UserDetail> GetById(int id);
     }

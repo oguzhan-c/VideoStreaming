@@ -9,7 +9,7 @@ using Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFremavork
 {
-    public class EfTrendDal : EfEntitiyRepositoryBase<Trend, VideStreamingContext>, ITrendDal
+    public class EfTrendDal : EfEntitiyRepositoryBase<Trend, VideoStreamingContext>, ITrendDal
     {
 
     }

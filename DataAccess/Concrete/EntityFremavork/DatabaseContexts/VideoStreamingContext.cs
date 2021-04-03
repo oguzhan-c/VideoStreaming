@@ -8,7 +8,7 @@ using Core.Entities.Concrute;
 namespace DataAccess.Concrete.EntityFremavork.DatabaseContexts
 {
     //Context : Db deki Tablolar İle Class ları Birbirine Bağlamak 
-    public class VideStreamingContext : DbContext
+    public class VideoStreamingContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

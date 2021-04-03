@@ -12,6 +12,7 @@ namespace Business.Abstruct
         IDataResult<UserOperationClaim> GetById(int id);
         IResult Add(UserOperationClaim userOperationClaim);
         IResult Update(UserOperationClaim userOperationClaim);
-        IResult Delete(UserOperationClaim userOperationClaim);
+        IResult Delete(int id);
+
     }
 }

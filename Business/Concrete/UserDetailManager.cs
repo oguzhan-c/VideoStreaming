@@ -74,18 +74,19 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IResult Delete(UserDetail userDetail)
+        public IResult Delete(int id)
         {
             IResult result = BusinessRule.Run
                 (
-                    CheckIfUserDetailAlreadyDeleted(userDetail.Id)
+                    CheckIfUserDetailAlreadyDeleted(id)
                 );
             if (result != null)
             {
                 return result;
             }
 
-            _userDetailDal.Delete(userDetail);
+            var deleteToUserDetail = _userDetailDal.Get(ud => ud.Id == id);
+            _userDetailDal.Delete(deleteToUserDetail);
             return new SuccessResult();
         }
 

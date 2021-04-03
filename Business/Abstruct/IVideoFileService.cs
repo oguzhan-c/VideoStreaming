@@ -12,7 +12,7 @@ namespace Business.Abstruct
         IDataResult<VideoFile> GetById(int id);
         IDataResult<VideoFile> GetByVideoId(int videoId);
         IResult Add(VideoFile videoFile);
-        IResult Delete(VideoFile videoFile);
+        IResult Delete(int id);
         IResult Update(VideoFile videoFile);
     }
 }

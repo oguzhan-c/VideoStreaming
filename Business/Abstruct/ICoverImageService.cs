@@ -12,6 +12,6 @@ namespace Business.Abstruct
         IDataResult<CoverImage> GetById(int id);
         IResult Add(CoverImage coverImage);
         IResult Update(CoverImage coverImage);
-        IResult Delete(CoverImage coverImage);
+        IResult Delete(int id);
     }
 }

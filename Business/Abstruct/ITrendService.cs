@@ -11,6 +11,6 @@ namespace Business.Abstruct
         IDataResult<List<Trend>> GetAll();
         IResult Add(Trend trend);
         IResult Update(Trend trend);
-        IResult Delete(Trend trend);
+        IResult Delete(int id);
     }
 }

@@ -9,7 +9,7 @@ using Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFremavork
 {
-    public class EfVideoFileDal : EfEntitiyRepositoryBase<VideoFile, VideStreamingContext>, IVideoFileDal
+    public class EfVideoFileDal : EfEntitiyRepositoryBase<VideoFile, VideoStreamingContext>, IVideoFileDal
     {
 
     }

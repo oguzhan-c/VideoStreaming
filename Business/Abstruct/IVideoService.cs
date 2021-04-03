@@ -12,6 +12,6 @@ namespace Business.Abstruct
         IDataResult<Video> GetById(int id);
         IResult Add(Video video);
         IResult Update(Video video);
-        IResult Delete(Video video);
+        IResult Delete(int id);
     }
 }

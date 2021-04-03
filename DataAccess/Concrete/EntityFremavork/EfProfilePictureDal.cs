@@ -9,7 +9,7 @@ using Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFremavork
 {
-    public class EfProfilePictureDal : EfEntitiyRepositoryBase<ProfilePicture, VideStreamingContext>, IProfilePictureDal
+    public class EfProfilePictureDal : EfEntitiyRepositoryBase<ProfilePicture, VideoStreamingContext>, IProfilePictureDal
     {
 
     }

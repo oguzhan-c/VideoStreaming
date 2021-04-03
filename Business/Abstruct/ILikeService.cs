@@ -12,6 +12,6 @@ namespace Business.Abstruct
         IDataResult<Like> GetById(int id);
         IResult Add(Like like);
         IResult Update(Like like);
-        IResult Delete(Like like);
+        IResult Delete(int id);
     }
 }

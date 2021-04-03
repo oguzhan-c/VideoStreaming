@@ -12,6 +12,6 @@ namespace Business.Abstruct
         IDataResult<ChannelPhoto> GetById(int id);
         IResult Add(ChannelPhoto channelPhoto);
         IResult Update(ChannelPhoto channelPhoto);
-        IResult Delete(ChannelPhoto channelPhoto);
+        IResult Delete(int id);
     }
 }

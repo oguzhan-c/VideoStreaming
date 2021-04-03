@@ -12,6 +12,6 @@ namespace Business.Abstruct
         IDataResult<Subscriber> GetById(int id);
         IResult Add(Subscriber subscriber);
         IResult Update(Subscriber subscriber);
-        IResult DElete(Subscriber subscriber);
+        IResult Delete(int id);
     }
 }

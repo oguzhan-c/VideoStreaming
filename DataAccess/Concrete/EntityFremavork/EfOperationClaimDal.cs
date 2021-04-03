@@ -8,7 +8,7 @@ using DataAccess.Concrete.EntityFremavork.DatabaseContexts;
 
 namespace DataAccess.Concrete.EntityFremavork
 {
-    public class EfOperationClaimDal : EfEntitiyRepositoryBase<OperationClaim, VideStreamingContext>, IOperationClaimDal
+    public class EfOperationClaimDal : EfEntitiyRepositoryBase<OperationClaim, VideoStreamingContext>, IOperationClaimDal
     {
 
     }

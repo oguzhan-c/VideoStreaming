@@ -9,7 +9,7 @@ using Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFremavork
 {
-    public class EfCoverImageDal : EfEntitiyRepositoryBase<CoverImage, VideStreamingContext>, ICoverImageDal
+    public class EfCoverImageDal : EfEntitiyRepositoryBase<CoverImage, VideoStreamingContext>, ICoverImageDal
     {
 
     }

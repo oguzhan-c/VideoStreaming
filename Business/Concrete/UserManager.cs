@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Business.Concrete
 {
-    public class UserManager : IUSerService
+    public class UserManager : IUserService
     {
         private IUserDal _userDal;
 
@@ -49,12 +49,14 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IResult Delete(User user)
+        public IResult Delete(int id)
         {
+            var deleteToUser = _userDal.Get(u => u.Id == id);
+
             IResult result = BusinessRule.Run
             (
-                CheckIfUserAlreadyExist(user.Email),
-            CheckIfUserAlreadyDeleted(user.Email)
+                CheckIfUserAlreadyExist(deleteToUser.Email),
+            CheckIfUserAlreadyDeleted(id)
             );
 
             if (result != null)
@@ -62,14 +64,14 @@ namespace Business.Concrete
                 return result;
             }
 
-            _userDal.Delete(user);
+            _userDal.Delete(deleteToUser);
 
             return new SuccessResult();
         }
 
-        private IResult CheckIfUserAlreadyDeleted(string userEmail)
+        private IResult CheckIfUserAlreadyDeleted(int id)
         {
-            var result = _userDal.GetAll(u => u.Email == userEmail).Any();
+            var result = _userDal.GetAll(u => u.Id == id).Any();
 
             if (result)
             {
@@ -95,7 +97,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<User>>(_userDal.GetAll());
         }
 
-        private IResult CheckIfUsersExist()
+        public IResult CheckIfUsersExist()
         {
             var result = _userDal.GetAll().Any();
             if (result)
@@ -120,7 +122,7 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id));
         }
 
-        private IResult CheckIfUserExist(int id)
+        public IResult CheckIfUserExist(int id)
         {
             var result = _userDal.GetAll(u => u.Id == id).Any();
             if (result)

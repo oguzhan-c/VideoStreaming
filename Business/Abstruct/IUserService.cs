@@ -6,13 +6,16 @@ using Core.Utilities.Results.Abstruct;
 
 namespace Business.Abstruct
 {
-    public interface IUSerService
+    public interface IUserService
     {
         IDataResult<List<User>> GetAll();
         IResult Add(User user);
-        IResult Delete(User user);
+        IResult Delete(int id);
         IResult Update(User user);
         IDataResult<User> GetById(int id);
         IDataResult<User> GetByMail(string email);
+        IResult CheckIfUserExist(int id);
+        IResult CheckIfUsersExist();
+
     }
 }
