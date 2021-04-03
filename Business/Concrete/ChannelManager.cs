@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Business.Abstruct;
+using Business.Constat;
 using Core.Utilities.BusinessRules;
 using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
@@ -27,6 +28,13 @@ namespace Business.Concrete
                 (
                     CheckIfChannelsExist()
                 );
+
+            if (result != null)
+            {
+                return new ErrorDataResult<List<Channel>>(result.Message);
+            }
+
+            return new SuccessDataResult<List<Channel>>(_channelDal.GetAll());
         }
 
         private IResult CheckIfChannelsExist()
@@ -64,7 +72,7 @@ namespace Business.Concrete
                 return new SuccessResult();
             }
 
-            return new ErrorResult(ChannelMessages.ThisChannelsDoNotExist);
+            return new ErrorResult(ChannelMessages.ThisChannelDoNotExist);
         }
 
         public IResult Add(Channel channel)
