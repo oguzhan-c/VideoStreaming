@@ -47,6 +47,12 @@ namespace Business.Concrete
                 (
                     CheckIfChannelExist(id)
                 );
+            if (result != null)
+            {
+                return new ErrorDataResult<Channel>(result.Message);
+            }
+
+            return new SuccessDataResult<Channel>(_channelDal.Get(c => c.Id == id));
         }
 
         private IResult CheckIfChannelExist(int id)
