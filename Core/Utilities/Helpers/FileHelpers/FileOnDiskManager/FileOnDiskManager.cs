@@ -1,25 +1,22 @@
-﻿using Core.Utilities.Results.Abstruct;
+﻿using System;
+using System.IO;
+using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
-namespace Core.Utilities.Helpers
+namespace Core.Utilities.Helpers.FileHelpers.FileOnDiskManager
 {
-    public class FileHelper
+    public class FileOnDiskManager : IFileSystem
     {
-        static string sourcePath = Environment.CurrentDirectory + @"\wwwroot\Uploads";
-        public static String Add(IFormFile formFile)
+        public String Add(IFormFile formFile,string path)
         {
-            var result = newFilePath(formFile);
+            var result = NewFilePath(formFile,path);
             try
             {
                 var sourcePath = Path.GetTempFileName();
                 if (formFile.Length > 0)
                 {
-                    using (FileStream stream = new FileStream(sourcePath, FileMode.Create))
+                    using (var stream = new FileStream(sourcePath, FileMode.Create))
                     {
                         formFile.CopyTo(stream);
                     }
@@ -38,7 +35,7 @@ namespace Core.Utilities.Helpers
             }
         }
 
-        public static IResult Delete(String sourcePath)
+        public IResult Delete(string sourcePath)
         {
             try
             {
@@ -51,11 +48,11 @@ namespace Core.Utilities.Helpers
             return new SuccessResult();
         }
 
-        public static string Update(IFormFile formFile, String oldSourcePath)
+        public string Update(IFormFile formFile, String oldSourcePath , string path)
         {
             try
             {
-                var result = newFilePath(formFile);
+                var result = NewFilePath(formFile, path);
                 if (oldSourcePath.Length > 0)
                 {
                     using (var stream = new FileStream(result,FileMode.Create))
@@ -74,9 +71,13 @@ namespace Core.Utilities.Helpers
 
         }
 
-        private static String newFilePath(IFormFile formFile)
+        private static string NewFilePath(IFormFile formFile,string sourcePath)
         {
-            var fileExtension = Path.GetExtension(sourcePath + formFile.FileName);
+
+
+            var rootPath = Environment.CurrentDirectory + @"\wwwroot\" + sourcePath;
+
+            var fileExtension = Path.GetExtension(rootPath + formFile.FileName);
             var newGuidPath = Guid.NewGuid().ToString() + "_" +
                               DateTime.Now.Day + "_" +
                               DateTime.Now.Month + "_" +

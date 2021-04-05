@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Core.Utilities.Results.Abstruct;
 using Entities.Concrete;
 
@@ -13,5 +11,6 @@ namespace Business.Abstruct
         IResult Add(ProfilePicture profilePicture);
         IResult Delete(int id);
         IResult Update(ProfilePicture profilePicture);
+        //IDataResult<List<ProfilePicture>> GetByUserId(int userId); yarın yap
     }
 }

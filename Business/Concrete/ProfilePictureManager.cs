@@ -14,7 +14,7 @@ namespace Business.Concrete
 {
     public class ProfilePictureManager : IProfilePictureService
     {
-        private IProfilePictureDal _profilePictureDal;
+        private readonly IProfilePictureDal _profilePictureDal;
 
         public ProfilePictureManager(IProfilePictureDal profilePictureDal)
         {

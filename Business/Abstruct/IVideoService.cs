@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Core.Utilities.Results.Abstruct;
 using Entities.Concrete;
 
@@ -13,5 +11,7 @@ namespace Business.Abstruct
         IResult Add(Video video);
         IResult Update(Video video);
         IResult Delete(int id);
+        IResult CheckIfVideoExist(int id);
+        IResult CheckIfVideosExist();
     }
 }

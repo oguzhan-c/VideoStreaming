@@ -10,6 +10,10 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="wwwroot\ChannelPhotos\" />
+    <Folder Include="wwwroot\ProfilePictures\" />
+    <Folder Include="wwwroot\Uploads\CoverImages\" />
+    <Folder Include="wwwroot\Uploads\Videos\" />
   </ItemGroup>
 
 </Project>

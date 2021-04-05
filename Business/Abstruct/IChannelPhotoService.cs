@@ -1,8 +1,8 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Text;
 using Core.Utilities.Results.Abstruct;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 
 namespace Business.Abstruct
 {
@@ -10,8 +10,9 @@ namespace Business.Abstruct
     {
         IDataResult<List<ChannelPhoto>> GetAll();
         IDataResult<ChannelPhoto> GetById(int id);
-        IResult Add(ChannelPhoto channelPhoto);
-        IResult Update(ChannelPhoto channelPhoto);
+        IResult Add(IFormFile file, ChannelPhoto channelPhoto);
+        IResult Update(IFormFile file, ChannelPhoto channelPhoto);
+        IDataResult<List<ChannelPhoto>> GetChannelPhotosByChannelId(int id);
         IResult Delete(int id);
     }
 }

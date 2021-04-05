@@ -13,5 +13,7 @@ namespace Business.Abstruct
         IResult Add(Channel channel);
         IResult Update(Channel channel);
         IResult Delete(int id);
+        IResult CheckIfChannelExist(int id);
+        IResult CheckIfChannelsExist();
     }
 }

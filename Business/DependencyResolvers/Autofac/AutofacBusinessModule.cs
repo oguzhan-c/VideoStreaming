@@ -4,8 +4,6 @@ using Business.Abstruct;
 using Business.Concrete;
 using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
-using DataAccess.Abstruct.DataAcessLayers;
-using DataAccess.Concrete.EntityFremavork.DataAcessLayers;
 using System;
 using System.Collections.Generic;
 using System.Text;

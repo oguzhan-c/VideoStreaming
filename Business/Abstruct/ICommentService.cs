@@ -1,17 +1,17 @@
-﻿
-
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Core.Utilities.Results.Abstruct;
 using Entities.Concrete;
 
 namespace Business.Abstruct
 {
-    public interface IChannelPhotoService
+    public interface ICommentService
     {
-        IDataResult<List<ChannelPhoto>> GetAll();
-        IDataResult<ChannelPhoto> GetById(int id);
-        IResult Add(ChannelPhoto channelPhoto);
-        IResult Update(ChannelPhoto channelPhoto);
+        IDataResult<List<Comment>> GetAll();
+        IDataResult<Comment> GetById(int id);
+        IResult Add(Comment comment);
+        IResult Update(Comment comment);
         IResult Delete(int id);
     }
 }

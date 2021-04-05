@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Business.Abstruct;
 using Business.Constat;
 using Core.Utilities.BusinessRules;
@@ -14,8 +12,8 @@ namespace Business.Concrete
 {
     public class ChannelManager : IChannelService
     {
-        private IChannelDal _channelDal;
-        private IUserService _userService;
+        private readonly IChannelDal _channelDal;
+        private readonly IUserService _userService;
         public ChannelManager(IChannelDal channelDal, IUserService userService)
         {
             _channelDal = channelDal;
@@ -37,7 +35,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Channel>>(_channelDal.GetAll());
         }
 
-        private IResult CheckIfChannelsExist()
+        public IResult CheckIfChannelsExist()
         {
             var result = _channelDal.GetAll().Any();
 
@@ -63,7 +61,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Channel>(_channelDal.Get(c => c.Id == id));
         }
 
-        private IResult CheckIfChannelExist(int id)
+        public IResult CheckIfChannelExist(int id)
         {
             var result = _channelDal.GetAll(c => c.Id == id).Any();
 
@@ -79,7 +77,7 @@ namespace Business.Concrete
         {
             IResult result = BusinessRule.Run
             (
-                ChackIfSameChannelNameExist(channel.ChannelName),
+                CheckIfSameChannelNameExist(channel.ChannelName),
                 _userService.CheckIfUserExist(channel.UserId)
             );
 
@@ -92,7 +90,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        private IResult ChackIfSameChannelNameExist(string channelChannelName)
+        private IResult CheckIfSameChannelNameExist(string channelChannelName)
         {
             var result = _channelDal.GetAll(c => c.ChannelName == channelChannelName).Any();
 

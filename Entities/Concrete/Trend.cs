@@ -1,5 +1,4 @@
 ﻿using Core.Entities;
-using Core.Entities.Abstruct;
 
 namespace Entities.Concrete
 {
