@@ -1,10 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Core.Entities;
 
 namespace Entities.Concrete
 {
     public class Comment : IEntity
     {
+        [Key]
+
         public int Id { get; set; }
         public int PostedByUserId { get; set; }
         public int ResponseByUserId { get; set; }

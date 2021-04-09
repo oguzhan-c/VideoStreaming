@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Business.Abstruct;
 using Business.Constat;
 using Core.Entities.Concrute;
@@ -14,9 +12,9 @@ namespace Business.Concrete
 {
     public class UserOperationClaimManager : IUserOperationClaimService
     {
-        private IUserOperationClaimDal _userOperationClaimDal;
-        private IUserService _userService;
-        private IOperationClaimService _operationClaimService;
+        private readonly IUserOperationClaimDal _userOperationClaimDal;
+        private readonly IUserService _userService;
+        private readonly IOperationClaimService _operationClaimService;
         public UserOperationClaimManager(IUserOperationClaimDal userOperationClaimDal, IUserService userService, IOperationClaimService operationClaimService)
         {
             _userOperationClaimDal = userOperationClaimDal;
@@ -29,7 +27,7 @@ namespace Business.Concrete
             IResult result = BusinessRule.Run
                 (
                 _userService.CheckIfUsersExist(),
-                    _operationClaimService.ChackIfClaimsExist(),
+                    _operationClaimService.CheckIfClaimsExist(),
                     CheckIfUserOperationClaimsExist()
                 );
             if (result != null)
@@ -56,7 +54,7 @@ namespace Business.Concrete
             var selectedUserOperationClaim = _userOperationClaimDal.Get(uoc => uoc.Id == id);
             IResult result = BusinessRule.Run
                 ( _userService.CheckIfUserExist(selectedUserOperationClaim.UserId),
-                    _operationClaimService.ChackIfClaimExist(selectedUserOperationClaim.OperationClaimId),
+                    _operationClaimService.CheckIfClaimExist(selectedUserOperationClaim.OperationClaimId),
                     CheckIfUserOperationClaimExist(id)
                 );
             if (result != null)
@@ -114,7 +112,7 @@ namespace Business.Concrete
             IResult result = BusinessRule.Run
                 (
                     _userService.CheckIfUserExist(deleteToUSerOperationClaim.UserId),
-                    _operationClaimService.ChackIfClaimExist(deleteToUSerOperationClaim.OperationClaimId),
+                    _operationClaimService.CheckIfClaimExist(deleteToUSerOperationClaim.OperationClaimId),
                     CheckIfUserOperationClaimExist(deleteToUSerOperationClaim.Id)
                 );
             if (result != null)
@@ -124,6 +122,20 @@ namespace Business.Concrete
 
             _userOperationClaimDal.Delete(deleteToUSerOperationClaim);
             return new SuccessResult();
+        }
+
+        public IDataResult<List<OperationClaim>> GetByUser(int userId)
+        {
+            IResult result = BusinessRule.Run
+                (
+                    _userService.CheckIfUserExist(userId)
+                );
+            if (result != null)
+            {
+                return new ErrorDataResult<List<OperationClaim>>(result.Message);
+            }
+
+            return new SuccessDataResult<List<OperationClaim>>(_userService.GetClaims(userId).Data);
         }
     }
 }

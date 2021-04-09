@@ -1,7 +1,5 @@
 ﻿
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Business.Abstruct;
 using Business.Constat;
 using Core.Utilities.BusinessRules;
@@ -15,7 +13,7 @@ namespace Business.Concrete
 {
     class UserDetailManager : IUserDetailService
     {
-        private IUserDetailDal _userDetailDal;
+        private readonly IUserDetailDal _userDetailDal;
 
         public UserDetailManager(IUserDetailDal userDetailDal)
         {

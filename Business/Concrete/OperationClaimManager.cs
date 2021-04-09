@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Business.Abstruct;
 using Business.Constat;
 using Core.Entities.Concrute;
@@ -14,14 +12,12 @@ namespace Business.Concrete
 {
     public class OperationClaimManager : IOperationClaimService
     {
-        private IOperationClaimDal _operationClaimDal;
-        private IUserDal _userDal;//Claimleri hangi kullanıcı için getiriceğimizi söyleyen method orada  olduğu için gerekli.
-        private IUserService _userService;//Kullanıcı olup olmadığı kontrolü sağlanması için gerekli.
+        private readonly IOperationClaimDal _operationClaimDal;
+        private readonly IUserService _userService;//Kullanıcı olup olmadığı kontrolü sağlanması için gerekli.
 
-        public OperationClaimManager(IOperationClaimDal operationClaimDal, IUserDal userDal, IUserService userService)
+        public OperationClaimManager(IOperationClaimDal operationClaimDal , IUserService userService)
         {
             _operationClaimDal = operationClaimDal;
-            _userDal = userDal;
             _userService = userService;
         }
 
@@ -29,7 +25,7 @@ namespace Business.Concrete
         {
             IResult result = BusinessRule.Run
                 (
-                    ChackIfClaimsExist()
+                    CheckIfClaimsExist()
                 );
             if (result != null)
             {
@@ -39,7 +35,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<OperationClaim>>(_operationClaimDal.GetAll());
         }
 
-        public IResult ChackIfClaimsExist()
+        public IResult CheckIfClaimsExist()
         {
             var result = _operationClaimDal.GetAll().Any();
             if (result)
@@ -54,7 +50,7 @@ namespace Business.Concrete
         {
             IResult result = BusinessRule.Run
             (
-                ChackIfClaimExist(id)
+                CheckIfClaimExist(id)
             );
 
             if (result != null)
@@ -65,26 +61,28 @@ namespace Business.Concrete
             return new SuccessDataResult<OperationClaim>(_operationClaimDal.Get(op => op.Id == id));
         }
 
-        public IDataResult<List<OperationClaim>> GetByUser(User user)
+        public IDataResult<List<OperationClaim>> GetDefaultClaims(string defaultClaim)
         {
-            IResult result = BusinessRule.Run
-                (
-                    _userService.CheckIfUserExist(user.Id)
-                );
+            return new SuccessDataResult<List<OperationClaim>>(_operationClaimDal.GetDefaultClaims(defaultClaim).Data);
+        }
 
-            if (result != null)
+        public IDataResult<List<OperationClaim>> GetByUser(int userId)
+        {
+            var result = _userService.GetClaims(userId);
+
+            if (result.Succcess)
             {
-                return new ErrorDataResult<List<OperationClaim>>(result.Message);
+                return new SuccessDataResult<List<OperationClaim>>(result.Data);
             }
 
-            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user).Data);
-        }
+            return new ErrorDataResult<List<OperationClaim>>(result.Message);
+        }   
 
         public IResult Add(OperationClaim operationClaim)
         {
             IResult result = BusinessRule.Run
             (
-                ChackIfClaimAlreadyExist(operationClaim.Name)
+                CheckIfClaimAlreadyExist(operationClaim.Name)
             );
 
             if (result != null)
@@ -96,7 +94,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IResult ChackIfClaimAlreadyExist(string operationClaimName)
+        public IResult CheckIfClaimAlreadyExist(string operationClaimName)
         {
             var result = _operationClaimDal.GetAll(op => op.Name == operationClaimName).Any();
             if (result)
@@ -112,14 +110,19 @@ namespace Business.Concrete
             var deleteToOperationClaim = _operationClaimDal.Get(op => op.Name == name);
             IResult result = BusinessRule.Run
             (
-                ChackIfClaimAlreadyDeleted(deleteToOperationClaim.Name)
+                CheckIfClaimAlreadyDeleted(deleteToOperationClaim.Name)
             );
+
+            if (result != null)
+            {
+                return result;
+            }
 
             _operationClaimDal.Delete(deleteToOperationClaim);
             return new SuccessResult(OperationClaimMessages.Deleted);
         }
 
-        private IResult ChackIfClaimAlreadyDeleted(string name)
+        private IResult CheckIfClaimAlreadyDeleted(string name)
         {
             var result = _operationClaimDal.GetAll(op=>op.Name == name).Any();
             if (result)
@@ -135,7 +138,7 @@ namespace Business.Concrete
         {
             IResult result = BusinessRule.Run
             (
-                ChackIfClaimExist(operationClaim.Id)
+                CheckIfClaimExist(operationClaim.Id)
             );
 
             if (result != null)
@@ -146,7 +149,7 @@ namespace Business.Concrete
             return new SuccessResult(OperationClaimMessages.Updated);
         }
 
-        public IResult ChackIfClaimExist(int operationClaimId)
+        public IResult CheckIfClaimExist(int operationClaimId)
         {
             var result = _operationClaimDal.GetAll(op=>op.Id == operationClaimId).Any();
             if (result)
@@ -155,6 +158,7 @@ namespace Business.Concrete
             }
 
             return new ErrorResult(OperationClaimMessages.ThisClaimDoNotExist);
+
         }
     }
 }

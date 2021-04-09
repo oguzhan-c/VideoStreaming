@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Business.Abstruct;
 using Business.Constat;
 using Core.Utilities.BusinessRules;
@@ -14,7 +12,7 @@ namespace Business.Concrete
 {
     public class CommunicationManager : ICommunicationService
     {
-        private ICommunicationDal _communicationDal;
+        private readonly ICommunicationDal _communicationDal;
 
         public CommunicationManager(ICommunicationDal communicationDal)
         {

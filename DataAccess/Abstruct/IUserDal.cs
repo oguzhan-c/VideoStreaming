@@ -10,6 +10,7 @@ namespace DataAccess.Abstruct
 {
     public interface IUserDal : IEntityRepository<User>
     {
-        IDataResult<List<OperationClaim>> GetClaims(User user);
+        IDataResult<List<OperationClaim>> GetClaimsByUser(int userId);
+        IDataResult<User> GetUserForRegister(User user);
     }
 }

@@ -4,6 +4,7 @@ using System.Text;
 using Core.Entities.Concrute;
 using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Security.JWT;
+using Entities.Concrete;
 using Entities.Dtos;
 
 namespace Business.Abstruct

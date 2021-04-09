@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text;
 
 namespace Core.Entities.Concrute
@@ -9,6 +10,8 @@ namespace Core.Entities.Concrute
     {
         [Key]
         public int Id { get; set; }
-        public String Name { get; set; }
+        public string Name { get; set; }
+        public DateTime Date { get; set; }
+        public string ClaimType { get; set; }
     }
 }

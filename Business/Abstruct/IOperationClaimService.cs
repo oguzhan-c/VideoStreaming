@@ -10,12 +10,12 @@ namespace Business.Abstruct
     {
         IDataResult<List<OperationClaim>> GetAll();
         IDataResult<OperationClaim> GetById(int id);
-        IDataResult<List<OperationClaim>> GetByUser(User user);
+        IDataResult<List<OperationClaim>> GetDefaultClaims(string defaultClaim);
         IResult Add(OperationClaim operationClaim);
         IResult Delete(string name);
         IResult Update(OperationClaim operationClaim);
-        IResult ChackIfClaimExist(int operationClaimId);
-        IResult ChackIfClaimsExist();
+        IResult CheckIfClaimExist(int operationClaimId);
+        IResult CheckIfClaimsExist();
 
     }
 }

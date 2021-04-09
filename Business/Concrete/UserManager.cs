@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Business.Abstruct;
 using Business.Constat;
 using Core.Entities.Concrute;
@@ -8,13 +7,12 @@ using Core.Utilities.BusinessRules;
 using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
 using DataAccess.Abstruct;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Business.Concrete
 {
     public class UserManager : IUserService
     {
-        private IUserDal _userDal;
+        private readonly IUserDal _userDal;
 
         public UserManager(IUserDal userDal)
         {
@@ -38,7 +36,7 @@ namespace Business.Concrete
             return new SuccessResult(UserMessages.UserAdded);
         }
 
-        private IResult CheckIfUserAlreadyExist(string email)
+        public IResult CheckIfUserAlreadyExist(string email)
         {
             var result = _userDal.GetAll(u => u.Email == email).Any();
             if (result)
@@ -120,6 +118,34 @@ namespace Business.Concrete
             }
 
             return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id));
+        }
+
+        public IDataResult<List<OperationClaim>> GetClaims(int userId)
+        {
+            IResult result = BusinessRule.Run
+                (
+                    CheckIfUserExist(userId)
+                );
+            if (result != null)
+            {
+                return new ErrorDataResult<List<OperationClaim>>(result.Message);
+            }
+
+            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaimsByUser(userId).Data);
+        }
+
+        public IDataResult<User> GetUserForRegister(User user)
+        {
+            IResult result = BusinessRule.Run
+                (
+                    CheckIfUserExist(user.Id)
+                );
+            if (result != null)
+            {
+                return new ErrorDataResult<User>(result.Message);
+            }
+
+            return new SuccessDataResult<User>(_userDal.GetUserForRegister(user).Data);
         }
 
         public IResult CheckIfUserExist(int id)

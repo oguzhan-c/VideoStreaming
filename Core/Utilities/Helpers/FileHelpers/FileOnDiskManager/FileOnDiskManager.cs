@@ -76,14 +76,15 @@ namespace Core.Utilities.Helpers.FileHelpers.FileOnDiskManager
 
 
             var rootPath = Environment.CurrentDirectory + @"\wwwroot\" + sourcePath;
-
+                                                                                                                                
             var fileExtension = Path.GetExtension(rootPath + formFile.FileName);
             var newGuidPath = Guid.NewGuid().ToString() + "_" +
+                              formFile.Name + "_" +
                               DateTime.Now.Day + "_" +
                               DateTime.Now.Month + "_" +
                               DateTime.Now.Year + "_" +
                               fileExtension;
-            var result = $@"{sourcePath}\{newGuidPath}";
+            var result = $@"{rootPath}\{newGuidPath}";
             return result;
         }
     }
