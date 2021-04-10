@@ -9,7 +9,7 @@ using Entities.Dtos;
 
 namespace Business.Abstruct
 {
-    public interface IAuthService
+    public interface IAuthService :IServices
     {
         IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password);
         IDataResult<User> Login(UserForLoginDto userForLoginDto);

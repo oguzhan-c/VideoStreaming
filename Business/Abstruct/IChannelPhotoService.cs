@@ -1,12 +1,13 @@
 ﻿
 using System.Collections.Generic;
+using Core.Entities.Concrute;
 using Core.Utilities.Results.Abstruct;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 
 namespace Business.Abstruct
 {
-    public interface IChannelPhotoService
+    public interface IChannelPhotoService 
     {
         IDataResult<List<ChannelPhoto>> GetAll();
         IDataResult<ChannelPhoto> GetById(int id);
