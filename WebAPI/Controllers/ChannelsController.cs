@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
             _channelService = channelService;
         }
 
-        [HttpGet("getall")]
+        [HttpGet("getAll")]
         public IActionResult GeAll()
         {
             var result = _channelService.GetAll();
@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getbyid")]
+        [HttpGet("getById")]
         public IActionResult GetById(int id)
         {
             var result = _channelService.GetById(id);
@@ -59,7 +59,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("Update")]
+        [HttpPut("update")]
         public IActionResult Update(Channel channel)
         {
             var result = _channelService.Update(channel);
@@ -72,7 +72,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("Delete")]
+        [HttpPut("delete")]
         public IActionResult Delete(int id)
         {
             var result = _channelService.Delete(id);

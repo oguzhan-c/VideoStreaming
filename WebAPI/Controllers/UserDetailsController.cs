@@ -8,14 +8,14 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UserDetailsController : ControllerBase
     {
-        private IUserDetailService _userDetailService;
+        private readonly IUserDetailService _userDetailService;
 
         public UserDetailsController(IUserDetailService userDetailService)
         {
             _userDetailService = userDetailService;
         }
 
-        [HttpGet("getall")]
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
             var result = _userDetailService.GetAll();
@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
                 return BadRequest(result);
             }
         }
-        [HttpGet("getbyid")]
+        [HttpGet("getById")]
         public IActionResult GetById(int id)
         {
             var result = _userDetailService.GetById(id);
@@ -43,7 +43,8 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("delete")]
-        public IActionResult Delete(UserDetail userDetail)//UI tarafında tekrardan bakılacak.
+        //UI tarafında tekrardan bakılacak.
+        public IActionResult Delete(UserDetail userDetail)
         {
             var result = _userDetailService.Delete(userDetail.Id);
             if (result.Succcess)

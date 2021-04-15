@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using Business.Abstruct;
 using Core.Entities.Concrute;
 
@@ -13,14 +8,14 @@ namespace WebAPI.Controllers
     [ApiController]
     public class OperationClaimsController : ControllerBase
     {
-        private IOperationClaimService _operationClaimService;
+        private readonly IOperationClaimService _operationClaimService;
 
         public OperationClaimsController(IOperationClaimService operationClaimService)
         {
             _operationClaimService = operationClaimService;
         }
 
-        [HttpGet("getall")]
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
             var result = _operationClaimService.GetAll();
@@ -33,6 +28,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("getById")]
         public IActionResult GetById(int id)
         {
             var result = _operationClaimService.GetById(id);
@@ -75,7 +71,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPut("Update")]
+        [HttpPut("update")]
         public IActionResult Update(OperationClaim claim)
         {
             var result = _operationClaimService.Update(claim);

@@ -1,11 +1,5 @@
 ﻿using Business.Abstruct;
-using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Core.Entities.Concrute;
 
 namespace WebAPI.Controllers
@@ -14,13 +8,13 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        IUserService _userService;
+        readonly IUserService _userService;
         public UsersController(IUserService userService)
         {
             _userService = userService;
         }
 
-        [HttpGet("getall")]
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
             var result = _userService.GetAll();
@@ -33,7 +27,7 @@ namespace WebAPI.Controllers
                 return BadRequest(result);
             }
         }
-        [HttpGet("getbyid")]
+        [HttpGet("getById")]
         public IActionResult GetById(int id)
         {
             var result = _userService.GetById(id);

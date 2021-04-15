@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using Business.Abstruct;
 using Entities.Dtos;
 
@@ -11,11 +6,11 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthsController : Microsoft.AspNetCore.Mvc.Controller
+    public class AuthController : ControllerBase
     {
-        private IAuthService _authService;
+        private readonly IAuthService _authService;
 
-        public AuthsController(IAuthService authService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
         }

@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using Business.Abstruct;
 using Entities.Concrete;
 
@@ -21,7 +16,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpGet("getall")]
+        [HttpGet("getAll")]
         public IActionResult GeAll()
         {
             var result = _videoService.GetAll();
@@ -34,7 +29,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getbyid")]
+        [HttpGet("getById")]
         public IActionResult GetById(int id)
         {
             var result = _videoService.GetById(id);
@@ -60,7 +55,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("Update")]
+        [HttpPut("update")]
         public IActionResult Update([FromForm(Name = "Video")] Video video)
         {
             var result = _videoService.Update(video);
@@ -73,7 +68,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("Delete")]
+        [HttpPut("delete")]
         public IActionResult Delete([FromForm(Name = "Id")] int id)
         {
             var result = _videoService.Delete(id);

@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Business.Abstruct;
 using Entities.Concrete;
 
@@ -21,7 +17,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpGet("getall")]
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
             var result = _profilePictureService.GetAll();
@@ -33,7 +29,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getbyuserid")]
+        [HttpGet("getByUserId")]
         public IActionResult GetByUserId(int id)
         {
             var result = _profilePictureService.GetByUserId(id);
@@ -45,7 +41,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getbyid")]
+        [HttpGet("getById")]
         public IActionResult GetById([FromForm(Name = "Id")] int id)
         {
             var result = _profilePictureService.GetById(id);

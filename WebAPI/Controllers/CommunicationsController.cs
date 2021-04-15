@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using Business.Abstruct;
 using Entities.Concrete;
 
@@ -21,7 +16,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpGet("getall")]
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
             var result = _communicationService.GetAll();
@@ -34,7 +29,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getbyid")]
+        [HttpGet("getById")]
         public IActionResult GetByIed(int id)
         {
             var result = _communicationService.GetById(id);
@@ -73,8 +68,8 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("Update")]
-        IActionResult Update(Communication communication)
+        [HttpPut("update")]
+        public IActionResult Update(Communication communication)
         {
             var result = _communicationService.Update(communication);
 
@@ -85,17 +80,5 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-
-        /*
-            [HttpGet("getall")]
-            public IActionResult GetAll();
-            public IActionResult GetByIed(int id)
-            [HttpDelete("delete")]
-            public IActionResult Delete(int id)
-            [HttpPut("add")]    
-            public IActionResult Add()
-            [HttpPut("Update")]
-            public IActionResult Update()
-         */
     }
 }

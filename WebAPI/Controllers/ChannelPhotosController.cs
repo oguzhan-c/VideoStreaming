@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
             _channelPhotoService = channelPhotoService;
         }
 
-        [HttpGet("getall")]
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
             var result = _channelPhotoService.GetAll();
@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getbyid")]
+        [HttpGet("getById")]
         public IActionResult GetById([FromForm(Name = "Id")] int id)
         {
             var result = _channelPhotoService.GetById(id);

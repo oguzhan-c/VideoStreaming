@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using Business.Abstruct;
 using Entities.Concrete;
 
@@ -13,14 +8,14 @@ namespace WebAPI.Controllers
     [ApiController]
     public class TrendsController : ControllerBase
     {
-        private ITrendService _trendService;
+        private readonly ITrendService _trendService;
 
         public TrendsController(ITrendService trendService)
         {
             _trendService = trendService;
         }
 
-        [HttpGet("getall")]
+        [HttpGet("getAll")]
         public IActionResult GeAll()
         {
             var result = _trendService.GetAll();
@@ -33,7 +28,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getbyid")]
+        [HttpGet("getById")]
         public IActionResult GetById(int id)
         {
             var result = _trendService.GetById(id);
@@ -59,7 +54,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("Update")]
+        [HttpPut("update")]
         public IActionResult Update([FromForm(Name = "Trend")] Trend trend)
         {
             var result = _trendService.Update(trend);
@@ -72,7 +67,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("Delete")]
+        [HttpPut("delete")]
         public IActionResult Delete([FromForm(Name = "Id")]int id)
         {
             var result = _trendService.Delete(id);
