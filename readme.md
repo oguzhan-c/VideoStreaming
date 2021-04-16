@@ -1,8 +1,8 @@
-<<<<<<< HEAD
 ## File structure
 
 <details>
   <summary>Toggle Content</summary>
+
 ## VideoStreaming
 
 ###Business
@@ -24,4 +24,3 @@
 #####IUserService.cs
 #####IVideoFileService.cs
 #####IVideoService.cs
->>>>>>>
