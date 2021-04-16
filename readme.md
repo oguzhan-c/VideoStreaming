@@ -1,4 +1,3 @@
-```
 ## File structure
 
 <details>
@@ -24,6 +23,3 @@
 #####IUserService.cs
 #####IVideoFileService.cs
 #####IVideoService.cs
-
-
-
