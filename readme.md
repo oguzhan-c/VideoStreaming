@@ -9,29 +9,29 @@
 <details>
   <summary>Toggle Content</summary>
 
-###Business
+Business
 
 <details>
   <summary>Toggle Content</summary>
 
-####Abstruct
+Abstruct
 
 <details>
   <summary>Toggle Content</summary>
   
-#####IAuthService.cs
-#####IChannelPhotoService.cs
-#####ICommentService.cs
-#####ICommunicationService.cs
-#####ICoverImageService.cs
-#####IDislikeService.cs
-#####ILikeService.cs
-#####IOperationClaimService.cs
-#####IProfilePictureService.cs
-#####ISubscriberService.cs
-#####ITrendService.cs
-#####IUserDetailService.cs
-#####IUserOperationClaimService.cs
-#####IUserService.cs
-#####IVideoFileService.cs
-#####IVideoService.cs
+IAuthService.cs
+IChannelPhotoService.cs
+ICommentService.cs
+ICommunicationService.cs
+ICoverImageService.cs
+IDislikeService.cs
+ILikeService.cs
+IOperationClaimService.cs
+IProfilePictureService.cs
+ISubscriberService.cs
+ITrendService.cs
+IUserDetailService.cs
+IUserOperationClaimService.cs
+IUserService.cs
+IVideoFileService.cs
+IVideoService.cs
