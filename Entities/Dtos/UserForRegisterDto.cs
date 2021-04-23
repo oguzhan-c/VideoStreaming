@@ -19,7 +19,8 @@ namespace Entities.Dtos
         public string ZipCode { get; set; }
         public string Gender { get; set; }
         public string IdentityNumber { get; set; }
-        public DateTime DateOfBorth { get; set; }
+        public DateTime DateOfBorn { get; set; }
         public string RecoveryEmail { get; set; }
+        public string ChannelName { get; set; }
     }
 }

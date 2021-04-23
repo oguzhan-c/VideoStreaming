@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Business.Abstruct;
 using Entities.Concrete;
 
@@ -21,7 +17,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getAll")]
-        public IActionResult GeAll()
+        public IActionResult GetAll()
         {
             var result = _channelService.GetAll();
 
@@ -46,6 +42,19 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("getChannelPhoto")]
+        public IActionResult GetChannelPhoto(int id)
+        {
+            var result = _channelService.GetChannelPhoto(id);
+
+            if (result.Succcess)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpPut("add")]
         public IActionResult Add(Channel channel)
         {
@@ -59,10 +68,23 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("update")]
-        public IActionResult Update(Channel channel)
+        [HttpPost("addChannelPhoto")]
+        public IActionResult AddChannelPhoto([FromForm(Name = "channelPhoto")] IFormFile channelPhotoFile,[FromForm]int id)
         {
-            var result = _channelService.Update(channel);
+            var result = _channelService.AddChannelPhoto(channelPhotoFile, id);
+
+            if (result.Succcess)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPut("update")]
+        public IActionResult Update([FromForm(Name = "channelPhoto")]IFormFile channelPhotoFile,[FromForm] Channel channel)
+        {
+            var result = _channelService.Update(channelPhotoFile,channel);
 
             if (result.Succcess)
             {

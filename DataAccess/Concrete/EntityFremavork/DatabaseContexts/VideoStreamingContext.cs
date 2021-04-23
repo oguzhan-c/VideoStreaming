@@ -31,8 +31,6 @@ namespace DataAccess.Concrete.EntityFremavork.DatabaseContexts
         public DbSet<ChannelPhoto> ChannelPhotos { get; set; }
         public DbSet<Trend> Trends { get; set; }
         public DbSet<Video> Videos { get; set; }
-        public DbSet<VideoFile> VideoFiles { get; set; }
-        public DbSet<CoverImage> CoverImages { get; set; }
         public DbSet<Subscriber> Subscribers { get; set; }
         public DbSet<Dislike> Dislikes { get; set; }
         public DbSet<Like> Likes { get; set; }

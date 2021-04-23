@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
 
 
         [HttpGet("getById")]
-        public IActionResult GetById([FromForm(Name = "Id")] int id)
+        public IActionResult GetById([FromForm(Name = "id")] int id)
         {
             var result = _likeService.GetById(id);
             if (result.Succcess)
@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add([FromForm(Name = ("Like"))] Like like)
+        public IActionResult Add([FromForm(Name = ("like"))] Like like)
         {
             var result = _likeService.Add(like);
 
@@ -54,7 +54,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("delete")]
-        public IActionResult Delete([FromForm(Name = ("Id"))] int id)
+        public IActionResult Delete([FromForm(Name = ("id"))] int id)
         {
             var result = _likeService.Delete(id);
             if (result.Succcess)
@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("update")]
-        public IActionResult Update([FromForm(Name = ("Like"))] Like like)
+        public IActionResult Update([FromForm(Name = ("like"))] Like like)
         {
             var result = _likeService.Update(like);
 

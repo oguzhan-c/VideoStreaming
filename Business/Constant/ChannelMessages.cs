@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Business.Constat
+﻿namespace Business.Constant
 {
     public class ChannelMessages 
     {
@@ -10,5 +6,7 @@ namespace Business.Constat
         public static string ThisChannelDoNotExist = "This Channel Do Not Exist";
         public static string ThisChannelNameExist = "This Channel Name Exist";
         public static string ThisChannelAlreadyDeleted = "This Channel Already Deleted";
+        public static string ThisChannelAlreadyExist = "This Channel Already Exist";
     }
+
 }

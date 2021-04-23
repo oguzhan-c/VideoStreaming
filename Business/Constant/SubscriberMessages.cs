@@ -1,5 +1,5 @@
 ﻿
-namespace Business.Constat
+namespace Business.Constant
 {
     public class SubscriberMessages
     {

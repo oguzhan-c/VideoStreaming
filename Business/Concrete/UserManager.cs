@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Business.Abstruct;
-using Business.Constat;
+using Business.Constant;
 using Core.Entities.Concrute;
 using Core.Utilities.BusinessRules;
 using Core.Utilities.Results.Abstruct;
@@ -41,7 +41,7 @@ namespace Business.Concrete
             var result = _userDal.GetAll(u => u.Email == email).Any();
             if (result)
             {
-                return new ErrorResult(UserMessages.UserAlreadExist);
+                return new ErrorResult(UserMessages.UserAlreadyExist);
             }
 
             return new SuccessResult();

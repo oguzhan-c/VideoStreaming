@@ -1,14 +1,13 @@
 ﻿
 using System.Collections.Generic;
 using Business.Abstruct;
-using Business.Constat;
+using Business.Constant;
 using Core.Utilities.BusinessRules;
 using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
 using DataAccess.Abstruct;
 using Entities.Concrete;
-using Microsoft.EntityFrameworkCore.Internal;
-
+using System.Linq;
 namespace Business.Concrete
 {
     class UserDetailManager : IUserDetailService

@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
 
 
         [HttpGet("getById")]
-        public IActionResult GetById([FromForm(Name = "Id")] int id)
+        public IActionResult GetById([FromForm(Name = "id")] int id)
         {
             var result = _userOperationClaimService.GetById(id);
             if (result.Succcess)
@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add([FromForm(Name = ("UserOperationClaim"))] UserOperationClaim userOperationClaim)
+        public IActionResult Add([FromForm(Name = ("userOperationClaim"))] UserOperationClaim userOperationClaim)
         {
             var result = _userOperationClaimService.Add(userOperationClaim);
 
@@ -55,7 +55,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("delete")]
-        public IActionResult Delete([FromForm(Name = ("Id"))] int id)
+        public IActionResult Delete([FromForm(Name = ("id"))] int id)
         {
             var result = _userOperationClaimService.Delete(id);
             if (result.Succcess)
@@ -67,7 +67,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("update")]
-        public IActionResult Update([FromForm(Name = ("UserOperationClaim"))] UserOperationClaim userOperationClaim)
+        public IActionResult Update([FromForm(Name = ("userOperationClaim"))] UserOperationClaim userOperationClaim)
         {
             var result = _userOperationClaimService.Update(userOperationClaim);
 

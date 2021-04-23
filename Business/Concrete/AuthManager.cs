@@ -1,6 +1,6 @@
 ﻿using System;
 using Business.Abstruct;
-using Business.Constat;
+using Business.Constant;
 using Core.Entities.Concrute;
 using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
@@ -20,8 +20,9 @@ namespace Business.Concrete
         private readonly IUserDetailService _userDetailService;
         private readonly IOperationClaimService _operationClaimService;
         private readonly IUserOperationClaimService _userOperationClaimService;
+        private readonly IChannelService _channelService;
 
-        public AuthManager(ITokenHelper tokenHelper, IUserService userService, ICommunicationService communicationService, IUserDetailService userDetailService, IOperationClaimService operationClaimService, IUserOperationClaimService userOperationClaimService)
+        public AuthManager(ITokenHelper tokenHelper, IUserService userService, ICommunicationService communicationService, IUserDetailService userDetailService, IOperationClaimService operationClaimService, IUserOperationClaimService userOperationClaimService, IChannelService channelService)
         {
             _tokenHelper = tokenHelper;
             _userService = userService;
@@ -29,6 +30,7 @@ namespace Business.Concrete
             _userDetailService = userDetailService;
             _operationClaimService = operationClaimService;
             _userOperationClaimService = userOperationClaimService;
+            _channelService = channelService;
         }
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
@@ -45,10 +47,6 @@ namespace Business.Concrete
                 Status = true,//Şimdilik direkt olarak sitede oturum açabilecek daha sonra email doğrulama modülü eklenecek
             };
             
-            _userService.Add(user);
-
-            
-
             var communication = new Communication
             {
                 UserId = _userService.GetUserForRegister(user).Data.Id,
@@ -66,19 +64,31 @@ namespace Business.Concrete
             var userDetail = new UserDetail
             {
                 UserId = _userService.GetUserForRegister(user).Data.Id,
-                DateOfBorth = userForRegisterDto.DateOfBorth,
+                DateOfBorn = userForRegisterDto.DateOfBorn,
                 DateOfJoin = DateTime.Now,//Direkt kayıt olduğu zaman atanacak
                 Gender = userForRegisterDto.Gender,
                 IdentityNumber = userForRegisterDto.IdentityNumber,
                 RecoveryEmail = userForRegisterDto.RecoveryEmail
             };
 
+            var channel = new Channel
+            {
+                UserId = user.Id,
+                ChannelName = userForRegisterDto.ChannelName,
+                ChannelPhotoPath = null,
+                Description = null,
+                InstallationDate = userDetail.DateOfJoin,
+                UpdateDate = DateTime.Now
+            };
+
+            _userService.Add(user);
             _communicationService.Add(communication);
             _userDetailService.Add(userDetail);
             _userService.Add(user);
+            _channelService.Add(channel);
 
             //Register olduktan sonra kullanıcıya default olarak operationClaim.ClaimType da Default olarak belirtilen
-            //claimler atanıyor.
+            //ilk claim atanıyor.
             var userOperationClaim = new UserOperationClaim
             {
                 UserId = user.Id,
@@ -92,7 +102,6 @@ namespace Business.Concrete
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
-
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
             if (!userToCheck.Succcess)
             {
@@ -113,7 +122,7 @@ namespace Business.Concrete
 
             if (!result.Succcess)
             {
-                return new ErrorResult(UserMessages.UserAlreadExist);
+                return new ErrorResult(UserMessages.UserAlreadyExist);
             }
 
             return new SuccessResult();

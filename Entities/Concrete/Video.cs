@@ -14,6 +14,10 @@ namespace Entities.Concrete
         public int TrendId { get; set; }
         public string Description { get; set; }
         public int Views { get; set; }
-        public DateTime Duration { get; set; }
+        public int Duration { get; set; }
+        public string VideoPath { get; set; }
+        public string ThumbnailPath { get; set; }
+        public DateTime Date { get; set; }
+        public DateTime UpdateDate { get; set; }
     }
 }

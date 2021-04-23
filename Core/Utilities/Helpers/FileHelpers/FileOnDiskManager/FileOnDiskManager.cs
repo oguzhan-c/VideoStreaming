@@ -6,36 +6,29 @@ using Microsoft.AspNetCore.Http;
 
 namespace Core.Utilities.Helpers.FileHelpers.FileOnDiskManager
 {
-    public class FileOnDiskManager : IFileSystem
+    public static  class FileOnDiskManager 
     {
-        public String Add(IFormFile formFile,string path)
+        public static string Add(IFormFile formFile, string path)
         {
-            var result = NewFilePath(formFile,path);
-            try
+            var result = NewFilePath(formFile, path);
+
+            var sourcePath = Path.GetTempFileName();
+            if (formFile.Length > 0)
             {
-                var sourcePath = Path.GetTempFileName();
-                if (formFile.Length > 0)
+                using (var stream = new FileStream(sourcePath, FileMode.Create))
                 {
-                    using (var stream = new FileStream(sourcePath, FileMode.Create))
-                    {
-                        formFile.CopyTo(stream);
-                    }
-                    File.Move(sourcePath, result);
-                    return result;
+                    formFile.CopyTo(stream);
                 }
-                else
-                {
-                    return null;
-                }
+                File.Move(sourcePath, result);
+                return result;                                                                                                                                                                                          
             }
-            catch (Exception exception)
+            else
             {
-                Console.WriteLine(exception);
-                throw;
+                return null;
             }
         }
 
-        public IResult Delete(string sourcePath)
+        public static IResult Delete(string sourcePath)
         {
             try
             {
@@ -48,14 +41,14 @@ namespace Core.Utilities.Helpers.FileHelpers.FileOnDiskManager
             return new SuccessResult();
         }
 
-        public string Update(IFormFile formFile, String oldSourcePath , string path)
+        public static string Update(IFormFile formFile, String oldSourcePath, string path)
         {
             try
             {
                 var result = NewFilePath(formFile, path);
                 if (oldSourcePath.Length > 0)
                 {
-                    using (var stream = new FileStream(result,FileMode.Create))
+                    using (var stream = new FileStream(result, FileMode.Create))
                     {
                         formFile.CopyTo(stream);
                     }
@@ -71,19 +64,19 @@ namespace Core.Utilities.Helpers.FileHelpers.FileOnDiskManager
 
         }
 
-        private static string NewFilePath(IFormFile formFile,string sourcePath)
+        private static string NewFilePath(IFormFile formFile, string sourcePath)
         {
 
 
             var rootPath = Environment.CurrentDirectory + @"\wwwroot\" + sourcePath;
-                                                                                                                                
-            var fileExtension = Path.GetExtension(rootPath + formFile.FileName);
+
+            var fileInfo = new FileInfo(formFile.FileName);
             var newGuidPath = Guid.NewGuid().ToString() + "_" +
-                              formFile.Name + "_" +
+                              formFile.FileName + "_" +
                               DateTime.Now.Day + "_" +
                               DateTime.Now.Month + "_" +
                               DateTime.Now.Year + "_" +
-                              fileExtension;
+                              fileInfo.Extension;
             var result = $@"{rootPath}\{newGuidPath}";
             return result;
         }

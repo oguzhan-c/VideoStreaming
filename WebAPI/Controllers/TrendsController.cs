@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("add")]
-        public IActionResult Add([FromForm(Name = "Trend")] Trend trend)
+        public IActionResult Add([FromForm(Name = "trend")] Trend trend)
         {
             var result = _trendService.Add(trend);
 
@@ -55,7 +55,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("update")]
-        public IActionResult Update([FromForm(Name = "Trend")] Trend trend)
+        public IActionResult Update([FromForm(Name = "trend")] Trend trend)
         {
             var result = _trendService.Update(trend);
 
@@ -68,7 +68,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("delete")]
-        public IActionResult Delete([FromForm(Name = "Id")]int id)
+        public IActionResult Delete([FromForm(Name = "id")]int id)
         {
             var result = _trendService.Delete(id);
 

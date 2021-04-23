@@ -5,20 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Core" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\ChannelPhotos\" />
-    <Folder Include="wwwroot\ProfilePictures\" />
-    <Folder Include="wwwroot\Uploads\CoverImages\" />
-    <Folder Include="wwwroot\Uploads\Videos\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Business\Business.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Entities\Entities.csproj" />
   </ItemGroup>
 

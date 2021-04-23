@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Business.Abstruct;
-using Business.Constat;
+using Business.Constant;
 using Core.Utilities.BusinessRules;
 using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;

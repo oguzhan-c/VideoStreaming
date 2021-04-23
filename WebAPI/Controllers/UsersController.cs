@@ -42,9 +42,10 @@ namespace WebAPI.Controllers
         }
         
         [HttpDelete("delete")]
-        public IActionResult Delete(User user)//UI tarafında tekrardan bakılacak.
+        public IActionResult Delete(int id)//UI tarafında tekrardan bakılacak.
         {
-            var result =_userService.Delete(user.Id);
+            var result = _userService.Delete(id);
+
             if (result.Succcess)
             {
                 return Ok(result);

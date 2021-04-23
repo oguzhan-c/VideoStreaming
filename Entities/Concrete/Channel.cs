@@ -11,6 +11,8 @@ namespace Entities.Concrete
         public int UserId { get; set; }
         public string ChannelName { get; set; }
         public DateTime InstallationDate { get; set; }
+        public DateTime UpdateDate { get; set; }
+        public string ChannelPhotoPath { get; set; }
         public string Description { get; set; }
     }
 }

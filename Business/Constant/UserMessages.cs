@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Core.Entities.Concrute;
-
-namespace Business.Constat
+﻿namespace Business.Constant
 {
     public class UserMessages
     {
-        public static string UserAlreadExist = "User Already Exist";
+        public static string UserAlreadyExist = "User Already Exist";
         public static string UserAdded = "User Added";
         public static string UserAlreadyDeleted = "User Already Deleted";
         public static string UsersDoNotExist = "Users Do Not Exist";

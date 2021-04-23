@@ -12,7 +12,7 @@ namespace Entities.Concrete
         public int UserId { get; set; }
         public string Gender { get; set; }
         public string IdentityNumber { get; set; }
-        public DateTime DateOfBorth { get; set; }
+        public DateTime DateOfBorn { get; set; }
         public string RecoveryEmail { get; set; }
         public DateTime DateOfJoin { get; set; }
     }

@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        private ICommentService _commentService;
+        private readonly ICommentService _commentService;
 
         public CommentsController(ICommentService commentService)
         {
@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
 
 
         [HttpGet("getById")]
-        public IActionResult GetById([FromForm(Name = "Id")] int id)
+        public IActionResult GetById([FromForm] int id)
         {
             var result = _commentService.GetById(id);
             if (result.Succcess)
@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add([FromForm(Name = ("Comment"))] Comment comment)
+        public IActionResult Add([FromForm(Name = ("comment"))] Comment comment)
         {
             var result = _commentService.Add(comment);
 
@@ -54,7 +54,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("delete")]
-        public IActionResult Delete([FromForm(Name = ("Id"))] int id)
+        public IActionResult Delete([FromForm] int id)
         {
             var result = _commentService.Delete(id);
             if (result.Succcess)
@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("update")]
-        public IActionResult Update([FromForm(Name = ("Comment"))] Comment comment)
+        public IActionResult Update([FromForm(Name = ("comment"))] Comment comment)
         {
             var result = _commentService.Update(comment);
 

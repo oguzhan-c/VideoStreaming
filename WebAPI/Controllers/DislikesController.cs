@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
 
 
         [HttpGet("getById")]
-        public IActionResult GetById([FromForm(Name = "Id")] int id)
+        public IActionResult GetById([FromForm] int id)
         {
             var result = _dislikeService.GetById(id);
             if (result.Succcess)
@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add([FromForm(Name = ("Dislike"))] Dislike dislike)
+        public IActionResult Add([FromForm(Name = ("dislike"))] Dislike dislike)
         {
             var result = _dislikeService.Add(dislike);
 
@@ -54,7 +54,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("delete")]
-        public IActionResult Delete([FromForm(Name = ("Id"))] int id)
+        public IActionResult Delete([FromForm] int id)
         {
             var result = _dislikeService.Delete(id);
             if (result.Succcess)
@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("update")]
-        public IActionResult Update([FromForm(Name = ("Dislike"))] Dislike dislike)
+        public IActionResult Update([FromForm(Name = ("dislike"))] Dislike dislike)
         {
             var result = _dislikeService.Update(dislike);
 

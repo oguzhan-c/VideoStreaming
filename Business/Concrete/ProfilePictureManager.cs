@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Business.Abstruct;
-using Business.Constat;
 using Core.Utilities.BusinessRules;
 using Core.Utilities.Helpers.FileHelpers;
 using Core.Utilities.Helpers.FileHelpers.FileOnDiskManager;
@@ -10,7 +9,8 @@ using Core.Utilities.Results.Concrute;
 using DataAccess.Abstruct;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Internal;
+using System.Linq;
+using Business.Constant;
 
 namespace Business.Concrete
 {
@@ -18,14 +18,12 @@ namespace Business.Concrete
     {
         private readonly IProfilePictureDal _profilePictureDal;
         private readonly IUserService _userService;
-        private IFileSystem _fileSystem;
         private readonly string _path = "ProfilePictures";
 
-        public ProfilePictureManager(IProfilePictureDal profilePictureDal, IUserService userService, IFileSystem fileSystem)
+        public ProfilePictureManager(IProfilePictureDal profilePictureDal, IUserService userService)
         {
             _profilePictureDal = profilePictureDal;
             _userService = userService;
-            _fileSystem = fileSystem;
         }
 
         public IDataResult<List<ProfilePicture>> GetAll()
@@ -82,7 +80,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<ProfilePicture>>(_profilePictureDal.GetAll(pp=>pp.UserId == id));
         }
 
-        public IResult Add(IFormFile file, ProfilePicture profilePicture)
+        public IResult Add(IFormFile profilePhotoFile, ProfilePicture profilePicture)
         {
             IResult result = BusinessRule.Run
                 (
@@ -94,7 +92,7 @@ namespace Business.Concrete
                 return result;
             }
 
-            profilePicture.PicturePath = _fileSystem.Add(file, _path);
+            profilePicture.PicturePath = FileOnDiskManager.Add(profilePhotoFile, _path);
             profilePicture.Date = DateTime.Now;                                                                                                                                     
             _profilePictureDal.Add(profilePicture);
 
@@ -135,14 +133,16 @@ namespace Business.Concrete
             }
 
             var deleteToProfilePicture = _profilePictureDal.Get(pf => pf.Id == id);
-            new FileOnDiskManager().Delete(deleteToProfilePicture.PicturePath);
+
+            FileOnDiskManager.Delete(deleteToProfilePicture.PicturePath);
+
             _profilePictureDal.Delete(deleteToProfilePicture);
 
             return new SuccessResult();
 
         }
 
-        public IResult Update(IFormFile file, ProfilePicture profilePicture)
+        public IResult Update(IFormFile profilePhotoFile, ProfilePicture profilePicture)
         {
             IResult result = BusinessRule.Run
                 (
@@ -156,17 +156,17 @@ namespace Business.Concrete
 
             var profilePictureToUpdate = _profilePictureDal.Get(pp => pp.Id == profilePicture.Id);
 
-            profilePicture.Id = profilePictureToUpdate.Id;
-            profilePicture.PicturePath =
-                new FileOnDiskManager().Update(file, profilePictureToUpdate.PicturePath, _path);
+            profilePicture.PicturePath = FileOnDiskManager.Update(profilePhotoFile, profilePictureToUpdate.PicturePath, _path);
             profilePicture.Date = DateTime.Now;
+
+            _profilePictureDal.Update(profilePicture);
 
             return new SuccessResult();
         }
 
         private IResult CheckIfProfilePhotoAlreadyDeleted(int id)
         {
-            var result = _profilePictureDal.GetAll(pf => pf.Id == id).Any();
+            var result = _profilePictureDal.GetAll(pp => pp.Id == id).Any();
 
             if (result)
             {

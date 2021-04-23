@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Business.Abstruct;
-using Business.Constat;
+using Business.Constant;
 using Core.Utilities.BusinessRules;
+using Core.Utilities.Helpers.FileHelpers.FileOnDiskManager;
 using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
 using DataAccess.Abstruct;
 using Entities.Concrete;
-using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.AspNetCore.Http;
 
 namespace Business.Concrete
 {
@@ -15,6 +18,9 @@ namespace Business.Concrete
         private readonly IVideoDal _videoDal;
         private readonly IUserService _userService;
         private readonly IChannelService _channelService;
+        private string _videoPath = "Videos";
+        private string _thumbnailPath = "Thumbnails";
+
 
 
         public VideoManager(IVideoDal videoDal, IChannelService channelService, IUserService userService)
@@ -72,14 +78,50 @@ namespace Business.Concrete
 
         public IResult CheckIfVideoExist(int id)
         {
-            var result = _videoDal.GetAll(v=>v.Id == id).Any();
+            var result = _videoDal.GetAll(v => v.Id == id).Any();
             if (result)
             {
-                return new ErrorResult(VideoMessages.ThisVideoDoNotExist);
+                return new SuccessResult();
+
+            }
+            return new ErrorResult(VideoMessages.ThisVideoDoNotExist);
+
+
+        }
+
+        public IDataResult<Video> GetVideoFile(int id)
+        {
+            IResult result = BusinessRule.Run
+                (
+                    CheckIfVideoExist(id)
+                );
+
+            if (result != null)
+            {
+                return new ErrorDataResult<Video>(result.Message);
             }
 
-            return new SuccessResult();
+            var selectedVideo = _videoDal.Get(v => v.Id == id);
 
+            return new SuccessDataResult<Video>(_videoDal.Get(v => v.VideoPath == selectedVideo.VideoPath));
+        }
+
+        public IDataResult<Video> GetThumbnail(int id)
+        {
+
+            IResult result = BusinessRule.Run
+            (
+                CheckIfVideoExist(id)
+            );
+
+            if (result != null)
+            {
+                return new ErrorDataResult<Video>(result.Message);
+            }
+
+            var selectedVideo = _videoDal.Get(v => v.Id == id);
+
+            return new SuccessDataResult<Video>(_videoDal.Get(v => v.ThumbnailPath == selectedVideo.ThumbnailPath));
         }
 
         public IResult Add(Video video)
@@ -87,22 +129,70 @@ namespace Business.Concrete
             IResult result = BusinessRule.Run
                 (
                     CheckIfVideoAlreadyExist(video.Id),
-                   _userService.CheckIfUserExist(video.UserId),
+                    _userService.CheckIfUserExist(video.UserId),
                     _channelService.CheckIfChannelExist(video.ChannelId)
-            );
+                );
+
+            if (result != null)
+            {
+                return result;
+            }
+            
+            video.Date = DateTime.Now;
+
+            _videoDal.Add(video);
+            
+            return new SuccessResult();
+        }
+
+        public IResult AddVideoFile(IFormFile videoFile, int id)
+        {
+            var result = BusinessRule.Run
+                (
+                    CheckIfVideoExist(id)
+                );
 
             if (result != null)
             {
                 return result;
             }
 
-            _videoDal.Add(video);
+            var selectedVideo = _videoDal.Get(v => v.Id == id);
+
+            selectedVideo.VideoPath = FileOnDiskManager.Add(videoFile, _videoPath);
+            selectedVideo.Date = DateTime.Now;
+
+            _videoDal.Add(selectedVideo);
+
             return new SuccessResult();
         }
 
+        public IResult AddVideoThumbnail(IFormFile thumbnailFile, int id)
+        {
+            var result = BusinessRule.Run
+                (
+                    CheckIfVideoExist(id)
+                );
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            var selectedVideo = _videoDal.Get(v => v.Id == id);
+
+            selectedVideo.VideoPath = FileOnDiskManager.Add(thumbnailFile, _thumbnailPath);
+            selectedVideo.Date = DateTime.Now;
+
+            _videoDal.Add(selectedVideo);
+
+            return new SuccessResult();
+        }
+
+
         private IResult CheckIfVideoAlreadyExist(int videoId)
         {
-            var result = _videoDal.GetAll(v=>v.Id == videoId).Any();
+            var result = _videoDal.GetAll(v => v.Id == videoId).Any();
 
             if (result)
             {
@@ -112,9 +202,9 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IResult Update(Video video)
+        public IResult Update(IFormFile videoFile, IFormFile thumbnailFile, Video video)
         {
-            IResult result = BusinessRule.Run
+            var result = BusinessRule.Run
                 (
                     CheckIfVideoExist(video.Id)
                 );
@@ -124,7 +214,15 @@ namespace Business.Concrete
                 return result;
             }
 
+            var videoToUpdate = _videoDal.Get(v => v.Id == video.Id);
+
+            video.VideoPath = FileOnDiskManager.Update(videoFile, videoToUpdate.VideoPath, _videoPath);
+            video.ThumbnailPath = FileOnDiskManager.Update(thumbnailFile, videoToUpdate.ThumbnailPath, _thumbnailPath);
+            video.Date = videoToUpdate.Date;
+            videoToUpdate.UpdateDate = DateTime.Now;
+
             _videoDal.Update(video);
+
             return new SuccessResult();
         }
 
@@ -140,7 +238,12 @@ namespace Business.Concrete
             }
 
             var deleteToVideo = _videoDal.Get(v => v.Id == id);
+
+            FileOnDiskManager.Delete(deleteToVideo.VideoPath);
+            FileOnDiskManager.Delete(deleteToVideo.ThumbnailPath);
+
             _videoDal.Delete(deleteToVideo);
+
             return new SuccessResult();
         }
 

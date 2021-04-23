@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getById")]
-        public IActionResult GetById([FromForm(Name = "Id")] int id)
+        public IActionResult GetById([FromForm(Name = "id")] int id)
         {
             var result = _profilePictureService.GetById(id);
             if (result.Succcess)
@@ -54,7 +54,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add([FromForm(Name = ("ProfilePhoto"))] IFormFile file, [FromForm(Name = ("ProfilePicture"))] ProfilePicture profilePicture)
+        public IActionResult Add([FromForm(Name = ("profilePhoto"))] IFormFile file, [FromForm(Name = ("profilePicture"))] ProfilePicture profilePicture)
         {
             var result = _profilePictureService.Add(file, profilePicture);
 
@@ -67,7 +67,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("delete")]
-        public IActionResult Delete([FromForm(Name = ("ProfilePicture"))] ProfilePicture profilePicture)
+        public IActionResult Delete([FromForm(Name = ("profilePicture"))] ProfilePicture profilePicture)
         {
             var result = _profilePictureService.Delete(profilePicture.Id);
             if (result.Succcess)
@@ -79,7 +79,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("update")]
-        public IActionResult Update([FromForm(Name = ("ProfilPhoto"))] IFormFile file, [FromForm(Name = ("profilPicture"))] ProfilePicture profilePicture)
+        public IActionResult Update([FromForm(Name = ("profilePhoto"))] IFormFile file, [FromForm(Name = ("profilePicture"))] ProfilePicture profilePicture)
         {
             var result = _profilePictureService.Update(file, profilePicture);
 

@@ -1,4 +1,4 @@
-﻿namespace UiPreparation
+﻿namespace UIPreparation
 {
     using System;
     using System.IO;
