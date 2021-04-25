@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpGet("getById")]
+        [HttpGet("getbyid")]
         public IActionResult GetById([FromForm] int id)
         {
             var result = _dislikeService.GetById(id);

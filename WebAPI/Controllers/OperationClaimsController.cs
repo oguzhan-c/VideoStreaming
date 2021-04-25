@@ -15,7 +15,7 @@ namespace WebAPI.Controllers
             _operationClaimService = operationClaimService;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet("getall")]
         public IActionResult GetAll()
         {
             var result = _operationClaimService.GetAll();
@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getById")]
+        [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
             var result = _operationClaimService.GetById(id);

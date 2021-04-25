@@ -15,7 +15,7 @@ namespace WebAPI.Controllers
             _subscriberService = subscriberService;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet("getall")]
         public IActionResult GetAll()
         {
             var result = _subscriberService.GetAll();
@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpGet("getById")]
+        [HttpGet("getbyid")]
         public IActionResult GetById([FromForm(Name = "id")] int id)
         {
             var result = _subscriberService.GetById(id);

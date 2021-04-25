@@ -7,6 +7,7 @@ using Core.Utilities.BusinessRules;
 using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
 using DataAccess.Abstruct;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Business.Concrete
 {
@@ -163,7 +164,7 @@ namespace Business.Concrete
         {
             IResult result = BusinessRule.Run
                 (
-                    CheckIfUserAlreadyExist(email)
+                    CheckIfUserExistWithMail(email)
                 );
             if (result != null)
             {
@@ -171,6 +172,18 @@ namespace Business.Concrete
             }
 
             return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
+        }
+
+        private IResult CheckIfUserExistWithMail(string email)
+        {
+            var result = _userDal.GetAll(u => u.Email == email).Any();
+
+            if (result)
+            {
+                return new ErrorResult(UserMessages.UsersDoNotExist);
+            }
+
+            return new SuccessResult();
         }
 
         public IResult Update(User user)

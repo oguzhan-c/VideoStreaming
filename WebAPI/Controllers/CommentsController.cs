@@ -15,7 +15,7 @@ namespace WebAPI.Controllers
             _commentService = commentService;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet("getall")]
         public IActionResult GetAll()
         {
             var result = _commentService.GetAll();
@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpGet("getById")]
+        [HttpGet("getbyid")]
         public IActionResult GetById([FromForm] int id)
         {
             var result = _commentService.GetById(id);

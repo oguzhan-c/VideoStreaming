@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Business.Abstruct;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 
 namespace WebAPI.Controllers
 {
@@ -16,8 +16,7 @@ namespace WebAPI.Controllers
             _videoService = videoService;
         }
 
-
-        [HttpGet("getAll")]
+        [HttpGet("getall")]
         public IActionResult GeAll()
         {
             var result = _videoService.GetAll();
@@ -30,7 +29,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getById")]
+        [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
             var result = _videoService.GetById(id);
@@ -43,7 +42,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getThumbnailById")]
+        [HttpGet("getthumbnailbyid")]
         public IActionResult GetThumbnail(int id)
         {
             var result = _videoService.GetThumbnail(id);
@@ -56,8 +55,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-
-        [HttpGet("getVideoFileById")]
+        [HttpGet("getvideovilebyid")]
         public IActionResult GetVideoFile(int id)
         {
             var result = _videoService.GetVideoFile(id);
@@ -69,7 +67,8 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        [HttpPut("add")]
+
+        [HttpPost("add")]
         public IActionResult Add(Video video)
         {
             var result = _videoService.Add(video);
@@ -78,12 +77,12 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-            
+
             return BadRequest(result);
         }
 
-        [HttpPut("addVideoThumbnail")]
-        public IActionResult AddVideoThumbnail([FromForm(Name = "thumbnailFile")] IFormFile thumbnailFile , [FromForm] int id)
+        [HttpPost("addvideothumbnail")]
+        public IActionResult AddVideoThumbnail([FromForm(Name = "thumbnailFile")] IFormFile thumbnailFile, [FromForm] int id)
         {
             var result = _videoService.AddVideoFile(thumbnailFile, id);
 
@@ -95,7 +94,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("addVideoFile")]
+        [HttpPost("addvideofile")]
         public IActionResult AddVideoFile([FromForm(Name = "videoFile")] IFormFile videoFile, [FromForm] int id)
         {
             var result = _videoService.AddVideoFile(videoFile, id);
@@ -108,9 +107,9 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-
-        [HttpPut("update")]
-        public IActionResult Update([FromForm(Name = "videoFile")] IFormFile videoFile , [FromForm(Name = "thumbnailFile")] IFormFile thumbnailFile , [FromForm] Video video)
+        [HttpPut]
+        [Route("update")]
+        public ActionResult Update([FromForm(Name = "videofile")] IFormFile videoFile, [FromForm(Name = "thumbnailfile")] IFormFile thumbnailFile, Video video)
         {
             var result = _videoService.Update(videoFile, thumbnailFile, video);
 
@@ -122,7 +121,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("delete")]
+        [HttpDelete("delete")]
         public IActionResult Delete([FromForm] int id)
         {
             var result = _videoService.Delete(id);
@@ -134,5 +133,8 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
+
+
+
     }
 }

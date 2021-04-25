@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpGet("getById")]
+        [HttpGet("getbyid")]
         public IActionResult GetById([FromForm(Name = "id")] int id)
         {
             var result = _userOperationClaimService.GetById(id);

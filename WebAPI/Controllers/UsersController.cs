@@ -14,7 +14,7 @@ namespace WebAPI.Controllers
             _userService = userService;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet("getall")]
         public IActionResult GetAll()
         {
             var result = _userService.GetAll();
@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
                 return BadRequest(result);
             }
         }
-        [HttpGet("getById")]
+        [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
             var result = _userService.GetById(id);

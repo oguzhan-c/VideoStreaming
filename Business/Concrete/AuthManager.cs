@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Linq;
 using Business.Abstruct;
 using Business.Constant;
 using Core.Entities.Concrute;
+using Core.Utilities.BusinessRules;
 using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
+using DataAccess.Abstruct;
 using Entities.Concrete;
 using Entities.Dtos;
 
@@ -21,8 +24,9 @@ namespace Business.Concrete
         private readonly IOperationClaimService _operationClaimService;
         private readonly IUserOperationClaimService _userOperationClaimService;
         private readonly IChannelService _channelService;
+        private readonly IAuthDal _authDal;
 
-        public AuthManager(ITokenHelper tokenHelper, IUserService userService, ICommunicationService communicationService, IUserDetailService userDetailService, IOperationClaimService operationClaimService, IUserOperationClaimService userOperationClaimService, IChannelService channelService)
+        public AuthManager(ITokenHelper tokenHelper, IUserService userService, ICommunicationService communicationService, IUserDetailService userDetailService, IOperationClaimService operationClaimService, IUserOperationClaimService userOperationClaimService, IChannelService channelService, IAuthDal authDal)
         {
             _tokenHelper = tokenHelper;
             _userService = userService;
@@ -31,6 +35,7 @@ namespace Business.Concrete
             _operationClaimService = operationClaimService;
             _userOperationClaimService = userOperationClaimService;
             _channelService = channelService;
+            _authDal = authDal;
         }
 
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
@@ -44,14 +49,13 @@ namespace Business.Concrete
                 Email = userForRegisterDto.Email,
                 PasswordHash = passwordHash,//Buradaki PasswordHash Ve PasswordSalt yukarıda Hashhing Helper da out keywordleri
                 PasswordSalt = passwordSalt,//ile verlilen passwordsalt ve password hash. out keyword ü ile verilen obje geriye döndürülür.
-                Status = true,//Şimdilik direkt olarak sitede oturum açabilecek daha sonra email doğrulama modülü eklenecek
+                Status = true//Şimdilik direkt olarak onay verildi.Daha sonra EMail Onay Modülü Eklenecek.
             };
             
             var communication = new Communication
             {
                 UserId = _userService.GetUserForRegister(user).Data.Id,
                 Address1 = userForRegisterDto.Address1,
-
                 Address2 = userForRegisterDto.Address2,
                 City = userForRegisterDto.City,
                 Continent = userForRegisterDto.Continent,
@@ -102,13 +106,24 @@ namespace Business.Concrete
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
+            IResult result = BusinessRule.Run
+            (
+                CheckIfVerifyAccount(userForLoginDto.Email)
+            );
+
+            if (result != null)
+            {
+                return new ErrorDataResult<User>(result.Message);
+            }
+
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
             if (!userToCheck.Succcess)
             {
                 return new ErrorDataResult<User>(userToCheck.Message);
             }
 
-            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
+            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash,
+                userToCheck.Data.PasswordSalt))
             {
                 return new ErrorDataResult<User>(UserMessages.PasswordError);
             }
@@ -116,23 +131,58 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(userToCheck.Data, UserMessages.SuccessfulLogin);
         }
 
-        public IResult UserExists(string email)
+        public IResult LogOut(int userId)
         {
-            var result = _userService.CheckIfUserAlreadyExist(email);
+            var deleteToJasonWebToken = _authDal.Get(jwt => jwt.UserId == userId);
 
-            if (!result.Succcess)
+            var result = BusinessRule.Run
+                (
+                    CheckIfTokenAlreadyDeleted(deleteToJasonWebToken.Id)
+                );
+
+            _authDal.Delete(deleteToJasonWebToken);
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfTokenAlreadyDeleted(int id)
+        {
+            var result = _authDal.GetAll(jwt => jwt.Id == id).Any();
+
+            if (!result)
             {
-                return new ErrorResult(UserMessages.UserAlreadyExist);
+                return new ErrorResult(AuthMessages.ThisJasonWebTokenAlreadyDeleted);
             }
 
             return new SuccessResult();
+        }
 
+        private IResult CheckIfVerifyAccount(string email)
+        {
+            var result = _userService.GetByMail(email).Data.Status;
+
+            if (result != false)
+            {
+                return new ErrorResult(AuthMessages.ThisEmailDoesNotVerify);
+            }
+
+            return new SuccessResult();
         }
 
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var claims = _userService.GetClaims(user.Id);
             var accessToken = _tokenHelper.createToken(user, claims.Data);
+
+            var jwt = new JasonWebToken
+            {
+                UserId = user.Id,
+                Token = accessToken.Token,
+                Expiration = accessToken.Expiration
+            };
+
+            _authDal.Add(jwt);
+
             return new SuccessDataResult<AccessToken>(accessToken, UserMessages.AccessTokenCreated);
         }
     }

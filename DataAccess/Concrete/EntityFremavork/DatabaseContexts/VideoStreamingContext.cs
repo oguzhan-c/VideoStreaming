@@ -35,5 +35,6 @@ namespace DataAccess.Concrete.EntityFremavork.DatabaseContexts
         public DbSet<Dislike> Dislikes { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<JasonWebToken> JasonWebTokens { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpGet("getAll")]
+        [HttpGet("getall")]
         public IActionResult GetAll()
         {
             var result = _communicationService.GetAll();
@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getById")]
+        [HttpGet("getbyid")]
         public IActionResult GetByIed(int id)
         {
             var result = _communicationService.GetById(id);

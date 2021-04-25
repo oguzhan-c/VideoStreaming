@@ -15,7 +15,7 @@ namespace WebAPI.Controllers
             _trendService = trendService;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet("getall")]
         public IActionResult GeAll()
         {
             var result = _trendService.GetAll();
@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getById")]
+        [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
             var result = _trendService.GetById(id);

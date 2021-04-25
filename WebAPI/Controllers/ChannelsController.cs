@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
             _channelService = channelService;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet("getall")]
         public IActionResult GetAll()
         {
             var result = _channelService.GetAll();
@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getById")]
+        [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
             var result = _channelService.GetById(id);
@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getChannelPhoto")]
+        [HttpGet("getchannelphoto")]
         public IActionResult GetChannelPhoto(int id)
         {
             var result = _channelService.GetChannelPhoto(id);
@@ -68,7 +68,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("addChannelPhoto")]
+        [HttpPost("addchannelphoto")]
         public IActionResult AddChannelPhoto([FromForm(Name = "channelPhoto")] IFormFile channelPhotoFile,[FromForm]int id)
         {
             var result = _channelService.AddChannelPhoto(channelPhotoFile, id);

@@ -17,7 +17,7 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpGet("getAll")]
+        [HttpGet("getall")]
         public IActionResult GetAll()
         {
             var result = _profilePictureService.GetAll();
@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getByUserId")]
+        [HttpGet("getbyuserid")]
         public IActionResult GetByUserId(int id)
         {
             var result = _profilePictureService.GetByUserId(id);
@@ -41,9 +41,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getById")]
+        [HttpGet("getbyid")]
         public IActionResult GetById([FromForm(Name = "id")] int id)
         {
+
             var result = _profilePictureService.GetById(id);
             if (result.Succcess)
             {
