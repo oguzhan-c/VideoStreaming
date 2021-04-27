@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Business.Abstruct;
+using Business.BusinessAspects.Autofac;
 using Business.Constant;
 using Core.Utilities.BusinessRules;
 using Core.Utilities.Results.Abstruct;
@@ -84,6 +85,7 @@ namespace Business.Concrete
             return new ErrorResult(LikeMessages.ThisLikeDoNotExist);
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Add(Like like)
         {
             IResult result = BusinessRule.Run
@@ -114,6 +116,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Update(Like like)
         {
             IResult result = BusinessRule.Run
@@ -130,6 +133,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Delete(int id)
         {
             IResult result = BusinessRule.Run
@@ -157,7 +161,6 @@ namespace Business.Concrete
             }
 
             return new ErrorResult(LikeMessages.ThisLikeAlreadyDeleted);
-
         }
     }
 }

@@ -6,6 +6,7 @@ using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
 using DataAccess.Abstruct;
 using System.Linq;
+using Business.BusinessAspects.Autofac;
 using Business.Constant;
 
 namespace Business.Concrete
@@ -21,6 +22,7 @@ namespace Business.Concrete
             _userService = userService;
         }
 
+        [SecuredOperation("Root")]
         public IDataResult<List<OperationClaim>> GetAll()
         {
             IResult result = BusinessRule.Run
@@ -46,6 +48,7 @@ namespace Business.Concrete
             return new ErrorResult(OperationClaimMessages.ThisClaimsDoNotExist);
         }
 
+        [SecuredOperation("Root")]
         public IDataResult<OperationClaim> GetById(int id)
         {
             IResult result = BusinessRule.Run
@@ -66,6 +69,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<OperationClaim>>(_operationClaimDal.GetDefaultClaims(defaultClaim).Data);
         }
 
+        [SecuredOperation("Root")]
         public IDataResult<List<OperationClaim>> GetByUser(int userId)
         {
             var result = _userService.GetClaims(userId);
@@ -76,8 +80,9 @@ namespace Business.Concrete
             }
 
             return new ErrorDataResult<List<OperationClaim>>(result.Message);
-        }   
+        }
 
+        [SecuredOperation("Root")]
         public IResult Add(OperationClaim operationClaim)
         {
             IResult result = BusinessRule.Run
@@ -105,6 +110,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("Root")]
         public IResult Delete(string name)
         {
             var deleteToOperationClaim = _operationClaimDal.Get(op => op.Name == name);
@@ -133,7 +139,7 @@ namespace Business.Concrete
             return new ErrorResult(OperationClaimMessages.ThisClaimAlreadyDeleted);
         }
 
-
+        [SecuredOperation("Root")]
         public IResult Update(OperationClaim operationClaim)
         {
             IResult result = BusinessRule.Run

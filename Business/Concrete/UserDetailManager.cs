@@ -8,6 +8,8 @@ using Core.Utilities.Results.Concrute;
 using DataAccess.Abstruct;
 using Entities.Concrete;
 using System.Linq;
+using Business.BusinessAspects.Autofac;
+
 namespace Business.Concrete
 {
     class UserDetailManager : IUserDetailService
@@ -19,6 +21,7 @@ namespace Business.Concrete
             _userDetailDal = userDetailDal;
         }
 
+        [SecuredOperation("User/Root")]
         public IDataResult<List<UserDetail>> GetAll()
         {
             IResult result = BusinessRule.Run
@@ -44,6 +47,7 @@ namespace Business.Concrete
             return new ErrorResult(UserDetailMessages.UsersDoNotExist);
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Add(UserDetail userDetail)
         {
             IResult result = BusinessRule.Run
@@ -71,6 +75,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Delete(int id)
         {
             IResult result = BusinessRule.Run
@@ -99,6 +104,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Update(UserDetail userDetail)
         {
             IResult result = BusinessRule.Run
@@ -125,6 +131,7 @@ namespace Business.Concrete
             return new ErrorResult(UserDetailMessages.UserDetailDoNotExist);
         }
 
+        [SecuredOperation("Root")]
         public IDataResult<UserDetail> GetById(int id)
         {
             IResult result = BusinessRule.Run

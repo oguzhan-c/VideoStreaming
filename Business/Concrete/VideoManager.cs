@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Business.Abstruct;
+using Business.BusinessAspects.Autofac;
 using Business.Constant;
 using Core.Utilities.BusinessRules;
 using Core.Utilities.Helpers.FileHelpers.FileOnDiskManager;
@@ -124,6 +125,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Video>(_videoDal.Get(v => v.ThumbnailPath == selectedVideo.ThumbnailPath));
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Add(Video video)
         {
             IResult result = BusinessRule.Run
@@ -145,6 +147,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult AddVideoFile(IFormFile videoFile, int id)
         {
             var result = BusinessRule.Run
@@ -167,6 +170,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult AddVideoThumbnail(IFormFile thumbnailFile, int id)
         {
             var result = BusinessRule.Run
@@ -202,6 +206,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Update(IFormFile videoFile, IFormFile thumbnailFile, Video video)
         {
             var result = BusinessRule.Run
@@ -226,6 +231,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Delete(int id)
         {
             IResult result = BusinessRule.Run

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Business.Abstruct;
+using Business.BusinessAspects.Autofac;
 using Business.Constant;
 using Core.Utilities.BusinessRules;
 using Core.Utilities.Results.Abstruct;
@@ -23,6 +24,7 @@ namespace Business.Concrete
             _userService = userService;
         }
 
+        [SecuredOperation("Root")]
         public IDataResult<List<Subscriber>> GetAll()
         {
             IResult result = BusinessRule.Run
@@ -36,7 +38,7 @@ namespace Business.Concrete
 
             return new SuccessDataResult<List<Subscriber>>(_subscriberDal.GetAll());
         }
-
+        [SecuredOperation("User/Root")]
         public IDataResult<List<Subscriber>> GetByUserId(int id)
         {
             IResult result = BusinessRule.Run
@@ -50,7 +52,7 @@ namespace Business.Concrete
 
             return new SuccessDataResult<List<Subscriber>>(_subscriberDal.GetAll(s => s.UserId == id));
         }
-
+        [SecuredOperation("Root")]
         public IDataResult<List<Subscriber>> GetByChannelId(int id)
         {
             IResult result = BusinessRule.Run
@@ -76,6 +78,7 @@ namespace Business.Concrete
 
             return new ErrorResult(SubscriberMessages.ThisSubscribersDoNotExist);
         }
+
 
         public IDataResult<Subscriber> GetById(int id)
         {
@@ -103,6 +106,7 @@ namespace Business.Concrete
             return new ErrorResult(SubscriberMessages.ThisSubscriberDoNotExist);
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Add(Subscriber subscriber)
         {
             IResult result = BusinessRule.Run
@@ -131,6 +135,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Update(Subscriber subscriber)
         {
             IResult result = BusinessRule.Run
@@ -146,6 +151,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Delete(int id)
         {
             IResult result = BusinessRule.Run

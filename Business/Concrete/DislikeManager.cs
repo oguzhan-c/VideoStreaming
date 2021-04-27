@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Business.Abstruct;
+using Business.BusinessAspects.Autofac;
 using Business.Constant;
 using Core.Utilities.BusinessRules;
 using Core.Utilities.Results.Abstruct;
@@ -72,6 +73,7 @@ namespace Business.Concrete
              return new ErrorResult(DislikeMessages.ThisDislikeDoNotExist);
          }
 
+         [SecuredOperation("User/Root")]
          public IResult Add(Dislike dislike)
          {
 
@@ -100,6 +102,7 @@ namespace Business.Concrete
              return new SuccessResult();
          }
 
+         [SecuredOperation("User/Root")]
          public IResult Update(Dislike dislike)
          {
 
@@ -117,6 +120,7 @@ namespace Business.Concrete
              return new SuccessResult();
          }
 
+         [SecuredOperation("User/Root")]
          public IResult Delete(int id)
          {
 

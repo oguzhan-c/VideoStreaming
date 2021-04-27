@@ -10,6 +10,7 @@ using DataAccess.Abstruct;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
+using Business.BusinessAspects.Autofac;
 using Business.Constant;
 
 namespace Business.Concrete
@@ -26,6 +27,7 @@ namespace Business.Concrete
             _userService = userService;
         }
 
+        [SecuredOperation("Root")]
         public IDataResult<List<ProfilePicture>> GetAll()
         {
             IResult result = BusinessRule.Run
@@ -51,6 +53,7 @@ namespace Business.Concrete
             return new ErrorResult(ProfilePhotoMessages.ThisProfilePhotosDoNotExist);
         }
 
+        [SecuredOperation("Root")]
         public IDataResult<ProfilePicture> GetById(int id)
         {
             IResult result = BusinessRule.Run
@@ -65,6 +68,7 @@ namespace Business.Concrete
             return new SuccessDataResult<ProfilePicture>(_profilePictureDal.Get(pf => pf.Id == id));
         }
 
+        [SecuredOperation("User/Root")]
         public IDataResult<List<ProfilePicture>> GetByUserId(int id)
         {
             IResult result = BusinessRule.Run
@@ -80,6 +84,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<ProfilePicture>>(_profilePictureDal.GetAll(pp=>pp.UserId == id));
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Add(IFormFile profilePhotoFile, ProfilePicture profilePicture)
         {
             IResult result = BusinessRule.Run
@@ -121,6 +126,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Delete(int id)
         {
             IResult result = BusinessRule.Run
@@ -142,6 +148,7 @@ namespace Business.Concrete
 
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Update(IFormFile profilePhotoFile, ProfilePicture profilePicture)
         {
             IResult result = BusinessRule.Run

@@ -6,6 +6,7 @@ using Core.Utilities.Results.Concrute;
 using DataAccess.Abstruct;
 using Entities.Concrete;
 using System.Linq;
+using Business.BusinessAspects.Autofac;
 using Business.Constant;
 
 namespace Business.Concrete
@@ -19,6 +20,7 @@ namespace Business.Concrete
             _communicationDal = communicationDal;
         }
 
+        [SecuredOperation("Root")]
         public IDataResult<List<Communication>> GetAll()
         {
             IResult result = BusinessRule.Run
@@ -45,6 +47,7 @@ namespace Business.Concrete
             return new ErrorResult(CommunicationMessages.ThisCommunicationsDoNotExist);
         }
 
+        [SecuredOperation("Root")]
         public IDataResult<Communication> GetById(int id)
         {
             IResult result = BusinessRule.Run
@@ -71,6 +74,7 @@ namespace Business.Concrete
             return new ErrorResult(CommunicationMessages.ThisCommunicationDoNotExist);
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Add(Communication communication)
         {
             IResult result = BusinessRule.Run
@@ -98,7 +102,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-
+        [SecuredOperation("User/Root")]
         public IResult Delete(int id)
         {
             IResult result = BusinessRule.Run
@@ -127,6 +131,7 @@ namespace Business.Concrete
             return new ErrorResult(CommunicationMessages.ThisCommunicationAlreadyDeleted);
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Update(Communication communication)
         {
             IResult result = BusinessRule.Run

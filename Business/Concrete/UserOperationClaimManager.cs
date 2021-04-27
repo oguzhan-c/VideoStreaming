@@ -6,6 +6,7 @@ using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
 using DataAccess.Abstruct;
 using System.Linq;
+using Business.BusinessAspects.Autofac;
 using Business.Constant;
 
 namespace Business.Concrete
@@ -22,6 +23,7 @@ namespace Business.Concrete
             _operationClaimService = operationClaimService;
         }
 
+        [SecuredOperation("Root")]
         public IDataResult<List<UserOperationClaim>> GetAll()
         {
             IResult result = BusinessRule.Run
@@ -49,6 +51,7 @@ namespace Business.Concrete
             return new ErrorResult(UserOperationClaimMessages.ThisUserOperationClaimsDoNotExist);
         }
 
+        [SecuredOperation("Root")]
         public IDataResult<UserOperationClaim> GetById(int id)
         {
             var selectedUserOperationClaim = _userOperationClaimDal.Get(uoc => uoc.Id == id);
@@ -76,6 +79,7 @@ namespace Business.Concrete
             return new ErrorResult(UserOperationClaimMessages.ThisUserOperationClaimDoNotExist);
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Add(UserOperationClaim userOperationClaim)
         {
             IResult result = BusinessRule.Run
@@ -91,6 +95,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Update(UserOperationClaim userOperationClaim)
         {
             IResult result = BusinessRule.Run
@@ -106,6 +111,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Delete(int id)
         {
             var deleteToUSerOperationClaim = _userOperationClaimDal.Get(uoc => uoc.Id == id);
@@ -124,6 +130,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IDataResult<List<OperationClaim>> GetByUser(int userId)
         {
             IResult result = BusinessRule.Run

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Business.Abstruct;
+using Business.BusinessAspects.Autofac;
 using Business.Constant;
 using Core.Utilities.BusinessRules;
 using Core.Utilities.Helpers.FileHelpers.FileOnDiskManager;
@@ -78,6 +79,7 @@ namespace Business.Concrete
             return new ErrorResult(ChannelMessages.ThisChannelDoNotExist);
         }
 
+        [SecuredOperation("User/Root")]
         public IDataResult<Channel> GetChannelPhoto(int id)
         {
             var result = BusinessRule.Run
@@ -92,7 +94,7 @@ namespace Business.Concrete
 
             return new SuccessDataResult<Channel>(_channelDal.Get(c => c.Id == id).ChannelPhotoPath);
         }
-
+        [SecuredOperation("User/Root")]
         public IResult Add(Channel channel)
         {
             var result = BusinessRule.Run
@@ -114,6 +116,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult AddChannelPhoto(IFormFile channelPhotoFile , int id)
         {
             var result = BusinessRule.Run
@@ -159,6 +162,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Update(IFormFile channelPhotoFile,Channel channel)
         {
             IResult result = BusinessRule.Run
@@ -181,6 +185,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Delete(int id)
         {
             var deleteToChannel = _channelDal.Get(c => c.Id == id);
@@ -201,6 +206,7 @@ namespace Business.Concrete
             
             return new SuccessResult();
         }
+
 
         private IResult CheckIfChannelAlreadyDeleted(string channelName)
         {

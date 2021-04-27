@@ -16,7 +16,6 @@ namespace Business.Abstruct
         IDataResult<User> GetById(int id);
         IDataResult<User> GetByMail(string email);
         IDataResult<List<OperationClaim>> GetClaims(int userId);
-        IDataResult<User> GetUserForRegister(User user);
         IResult CheckIfUserExist(int id);
         IResult CheckIfUsersExist();
         IResult CheckIfUserAlreadyExist(string email);

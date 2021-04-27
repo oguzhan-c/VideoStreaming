@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Business.Abstruct;
+using Business.BusinessAspects.Autofac;
 using Business.Constant;
 using Core.Entities.Concrute;
 using Core.Utilities.BusinessRules;
@@ -20,6 +21,7 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Add(User user)
         {
             IResult result = BusinessRule.Run
@@ -48,6 +50,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Delete(int id)
         {
             var deleteToUser = _userDal.Get(u => u.Id == id);
@@ -81,8 +84,9 @@ namespace Business.Concrete
 
         }
 
+        [SecuredOperation("Root")]
         public IDataResult<List<User>> GetAll()
-        {
+        { 
             IResult result = BusinessRule.Run
             (
                 CheckIfUsersExist()
@@ -107,6 +111,7 @@ namespace Business.Concrete
             return new ErrorResult(UserMessages.UsersDoNotExist);
         }
 
+        [SecuredOperation("Root")]
         public IDataResult<User> GetById(int id)
         {
             IResult result = BusinessRule.Run
@@ -135,19 +140,6 @@ namespace Business.Concrete
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaimsByUser(userId).Data);
         }
 
-        public IDataResult<User> GetUserForRegister(User user)
-        {
-            IResult result = BusinessRule.Run
-                (
-                    CheckIfUserExist(user.Id)
-                );
-            if (result != null)
-            {
-                return new ErrorDataResult<User>(result.Message);
-            }
-
-            return new SuccessDataResult<User>(_userDal.GetUserForRegister(user).Data);
-        }
 
         public IResult CheckIfUserExist(int id)
         {
@@ -186,6 +178,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User/Root")]
         public IResult Update(User user)
         {
             IResult result = BusinessRule.Run
