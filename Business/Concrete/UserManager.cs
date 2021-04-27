@@ -178,7 +178,7 @@ namespace Business.Concrete
         {
             var result = _userDal.GetAll(u => u.Email == email).Any();
 
-            if (result)
+            if (!result)
             {
                 return new ErrorResult(UserMessages.UsersDoNotExist);
             }

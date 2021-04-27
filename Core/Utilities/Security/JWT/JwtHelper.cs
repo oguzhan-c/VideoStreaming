@@ -56,7 +56,7 @@ namespace Core.Utilities.Security.JWT
         private IEnumerable<Claim> SetClaims(User user, List<OperationClaim> operationClaims)
         {
             var claims = new List<Claim>();
-            claims.AddNameIdentifier(user.Id.ToString());
+            claims.Add(new Claim("userId",user.Id.ToString()));
             claims.AddName($"{user.FirstName} {user.LastName}");
             claims.AddEmail(user.Email);
             claims.AddRoles(operationClaims.Select(op=>op.Name).ToArray());

@@ -20,7 +20,7 @@ namespace DataAccess.Concrete.EntityFremavork
             {
                 var result = from operationClaim in context.OperationClaims
                     where operationClaim.ClaimType == defaultClaim
-                    select new OperationClaim {Id = operationClaim.Id , Name = operationClaim.Name , Date = operationClaim.Date};
+                    select new OperationClaim {Id = operationClaim.Id , Name = operationClaim.Name , Date = DateTime.Now};
 
                 return new SuccessDataResult<List<OperationClaim>>(result.ToList());
             }

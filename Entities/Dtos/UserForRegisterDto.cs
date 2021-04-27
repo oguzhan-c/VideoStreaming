@@ -21,6 +21,5 @@ namespace Entities.Dtos
         public string IdentityNumber { get; set; }
         public DateTime DateOfBorn { get; set; }
         public string RecoveryEmail { get; set; }
-        public string ChannelName { get; set; }
     }
 }

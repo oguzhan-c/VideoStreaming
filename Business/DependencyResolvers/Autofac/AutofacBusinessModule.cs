@@ -33,12 +33,12 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().SingleInstance();
             builder.RegisterType<ProfilePictureManager>().As<IProfilePictureService>().SingleInstance();
             builder.RegisterType<SubscriberManager>().As<ISubscriberService>().SingleInstance();
-            builder.RegisterType<TrendManager>().As<ITrendService>().SingleInstance();
             builder.RegisterType<UserDetailManager>().As<IUserDetailService>().SingleInstance();
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
             builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>().SingleInstance();
             builder.RegisterType<VideoManager>().As<IVideoService>().SingleInstance();
             //EntityFremawork için instance 
+            builder.RegisterType<EfAuthDal>().As<IAuthDal>().SingleInstance();
             builder.RegisterType<EfChannelDal>().As<IChannelDal>().SingleInstance();
             builder.RegisterType<EfCommentDal>().As<ICommentDal>().SingleInstance();
             builder.RegisterType<EfCommunicationDal>().As<ICommunicationDal>().SingleInstance();
@@ -47,7 +47,6 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().SingleInstance();
             builder.RegisterType<EfProfilePictureDal>().As<IProfilePictureDal>().SingleInstance();
             builder.RegisterType<EfSubscriberDal>().As<ISubscriberDal>().SingleInstance();
-            builder.RegisterType<EfTrendDal>().As<ITrendDal>().SingleInstance();
             builder.RegisterType<EfUserDetailDal>().As<IUserDetailDal>().SingleInstance();
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
             builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>().SingleInstance();

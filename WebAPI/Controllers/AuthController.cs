@@ -19,13 +19,14 @@ namespace WebAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
             _authService = authService;
+            _userService = userService;
+           
         }
 
         [HttpPost("login")]
@@ -47,26 +48,17 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-
-        [Authorize]//hangi kullanıcı log out yapacak onu anlamak için yazıldı
         [HttpDelete("logout")]
-        public IActionResult LogOut() 
+        public IActionResult LogOut(int userId)
         {
-            var rawUserId = _httpContextAccessor.HttpContext?.User.FindFirstValue("NameIdentifier");//log out yapılmak istenen user in id si getirildi.? ile null kontrolü yapıldı
+            var result = _authService.LogOut(userId);
 
-            if (rawUserId == null)
-            {
-                return Unauthorized();
-            }
-
-            var result = _authService.LogOut(rawUserId.AsInt());
-            
             if (result.Succcess)
             {
-                return BadRequest(result);
+                return Ok(result);
             }
 
-            return NoContent();
+            return BadRequest(result);
         }
 
 

@@ -28,8 +28,6 @@ namespace DataAccess.Concrete.EntityFremavork.DatabaseContexts
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<Channel> Channels { get; set; }
-        public DbSet<ChannelPhoto> ChannelPhotos { get; set; }
-        public DbSet<Trend> Trends { get; set; }
         public DbSet<Video> Videos { get; set; }
         public DbSet<Subscriber> Subscribers { get; set; }
         public DbSet<Dislike> Dislikes { get; set; }

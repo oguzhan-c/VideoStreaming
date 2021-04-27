@@ -51,10 +51,12 @@ namespace Business.Concrete
                 PasswordSalt = passwordSalt,//ile verlilen passwordsalt ve password hash. out keyword ü ile verilen obje geriye döndürülür.
                 Status = true//Şimdilik direkt olarak onay verildi.Daha sonra EMail Onay Modülü Eklenecek.
             };
-            
+
+            _userService.Add(user);
+
             var communication = new Communication
             {
-                UserId = _userService.GetUserForRegister(user).Data.Id,
+                UserId = user.Id,
                 Address1 = userForRegisterDto.Address1,
                 Address2 = userForRegisterDto.Address2,
                 City = userForRegisterDto.City,
@@ -64,31 +66,28 @@ namespace Business.Concrete
                 Street = userForRegisterDto.Street,
                 ZipCode = userForRegisterDto.ZipCode,
             };
+            _communicationService.Add(communication);
 
             var userDetail = new UserDetail
             {
-                UserId = _userService.GetUserForRegister(user).Data.Id,
+                UserId = user.Id,
                 DateOfBorn = userForRegisterDto.DateOfBorn,
                 DateOfJoin = DateTime.Now,//Direkt kayıt olduğu zaman atanacak
                 Gender = userForRegisterDto.Gender,
                 IdentityNumber = userForRegisterDto.IdentityNumber,
                 RecoveryEmail = userForRegisterDto.RecoveryEmail
             };
+            _userDetailService.Add(userDetail);
 
             var channel = new Channel
             {
                 UserId = user.Id,
-                ChannelName = userForRegisterDto.ChannelName,
-                ChannelPhotoPath = null,
-                Description = null,
+                ChannelName = $"{user.FirstName} {user.LastName}",
+                ChannelPhotoPath = "a",
                 InstallationDate = userDetail.DateOfJoin,
+                Description = $"This Channel Owner Name is {user.FirstName} {user.LastName}.This Channel Build on {userDetail.DateOfJoin}",
                 UpdateDate = DateTime.Now
             };
-
-            _userService.Add(user);
-            _communicationService.Add(communication);
-            _userDetailService.Add(userDetail);
-            _userService.Add(user);
             _channelService.Add(channel);
 
             //Register olduktan sonra kullanıcıya default olarak operationClaim.ClaimType da Default olarak belirtilen
@@ -96,7 +95,7 @@ namespace Business.Concrete
             var userOperationClaim = new UserOperationClaim
             {
                 UserId = user.Id,
-                OperationClaimId = _operationClaimService.GetDefaultClaims("Default").Data[0].Id
+                OperationClaimId = _operationClaimService.GetDefaultClaims("User").Data[0].Id
             };
 
             _userOperationClaimService.Add(userOperationClaim);
@@ -106,10 +105,11 @@ namespace Business.Concrete
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
+
             IResult result = BusinessRule.Run
-            (
-                CheckIfVerifyAccount(userForLoginDto.Email)
-            );
+                (
+                    CheckIfVerifyAccount(userForLoginDto.Email)
+                );
 
             if (result != null)
             {
@@ -133,35 +133,22 @@ namespace Business.Concrete
 
         public IResult LogOut(int userId)
         {
-            var deleteToJasonWebToken = _authDal.Get(jwt => jwt.UserId == userId);
+            var results = _authDal.GetAll(jwt=>jwt.UserId == userId);
 
-            var result = BusinessRule.Run
-                (
-                    CheckIfTokenAlreadyDeleted(deleteToJasonWebToken.Id)
-                );
-
-            _authDal.Delete(deleteToJasonWebToken);
-
-            return new SuccessResult();
-        }
-
-        private IResult CheckIfTokenAlreadyDeleted(int id)
-        {
-            var result = _authDal.GetAll(jwt => jwt.Id == id).Any();
-
-            if (!result)
+            foreach (var result in results)
             {
-                return new ErrorResult(AuthMessages.ThisJasonWebTokenAlreadyDeleted);
+                _authDal.Delete(result);
             }
 
             return new SuccessResult();
+
         }
 
         private IResult CheckIfVerifyAccount(string email)
         {
-            var result = _userService.GetByMail(email).Data.Status;
+            var result = _userService.GetByMail(email).Data;
 
-            if (result != false)
+            if (result.Status == false)
             {
                 return new ErrorResult(AuthMessages.ThisEmailDoesNotVerify);
             }

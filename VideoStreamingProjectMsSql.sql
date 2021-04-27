@@ -58,7 +58,7 @@ create table UserDetails(
 	UserId int not null ,
 	Gender varchar(7) not null,
 	IdentityNumber varchar(20) not null,
-	DateOfBorth datetime not null,
+	DateOfBorn datetime not null,
 	RecoveryEmail varchar(50) null,
 	DateOfJoin datetime default current_Timestamp not null,--Backend de registerDTO su oluþturunca orada register olduðu zamaný direk olarak buna ata
 
@@ -104,6 +104,8 @@ create table OperationClaims(--yetki operasyonlarý
 	Id int identity(1,1) not null,
 	Name varchar(500),
 	Date datetime default current_Timestamp not null,--datetime.now yapýlacak
+	ClaimType varchar(25) default 'Default' not null,  
+
 
 	Constraint PrimaryKey_Id_OperationClaims primary key (Id),
 )
@@ -128,7 +130,9 @@ create table Channels
 	UserId int not null,
 	ChannelName varchar(25) not null,--Backend de Kullanýcý ismi kanal ismi olacak þekilde kurgula.
 	InstallationDate datetime not null,--Backend de users e atanan dateofjoin deki bilgiyi buraya ata.
-	Description text  default '{Users.FirstName}{Users.LastName}{Users.DateOfJoin}',
+	UpdateDate datetime null,
+	ChannelPhotoPath text not null,
+	Description text  not null,
 
 
 	Constraint PrimaryKey_Channels_Id primary key(Id) ,
@@ -136,73 +140,24 @@ create table Channels
 		references [dbo].[Users](Id)
 ); 
 
-Create Table ChannelPhoto(
-	Id int  identity(1,1) not null ,
-	ChannelId int not null,
-	ImagePath text not null,
-	Date datetime default current_Timestamp not null,--datetime.now yapýlacak
-
-	Constraint PrimaryKey_ChannelPhoto_Id primary key(Id),
-	Constraint ForeignKey_ChannelPhoto_ChannelId foreign key(ChannelId)
-		references [dbo].[Channels](Id)
-
-);
-
-Create table Trends(
-	Id int identity(1,1) not null,
-	ChannelId int not null,
-
-	Constraint PrimaryKey_Trends_Id primary key(Id),
-	Constraint ForeignKey_Trends_ChannelId foreign key(ChannelId)
-		references [dbo].[Channels](Id)
-);
-
 create table Videos(
 	Id int identity(1,1) not null,
 	UserId int not null,
 	ChannelId int not null,
-	TrendId int default 0 not null,
 	Description text not null,
 	Views int not null,--görüntülenme sayýsý
-	Duration datetime not null,-- Þimdilik datetime sonra belki string olabilir.
-	
+	Duration int not null,-- Þimdilik datetime sonra belki string olabilir.
+	VideoPath text not null,
+	ThumbnailPath text not null,
+	Date datetime not null,
+	UpdateDate datetime null,
+
 	Constraint PrimaryKey_Videos_Id primary key(Id),
 	Constraint ForeignKey_Videos_UserId foreign key(UserId)
 		references [dbo].[Users](Id),
 	Constraint ForeignKey_Videos_ChannelId foreign key(ChannelId)
 		references [dbo].[Channels](Id),
-	Constraint ForeignKey_Videos_TrendId foreign key(TrendId)
-		references [dbo].[Trends](Id)
-
 );
-
-
-create table VideoFile
-(
-	Id int identity (1,1) not null,
-	VideoId int not null,
-	VideoPath text not null,
-	Date datetime default current_Timestamp not null,
-
-	Constraint PrimaryKey_Id_carImages primary key (Id),
-	Constraint ForeignKey_Videos_VideoId foreign key (VideoId)
-		references [dbo].[Videos](Id) on update cascade on delete cascade
-);
-
-Create table CoverImage(
-	Id int identity (1,1) not null,
-	VideoId int not null,
-	UserId int not null,
-	ImagePath text not null , 
-	Date datetime default current_Timestamp not null,
-
-	Constraint PrimaryKey_CoverImage_Id primary key (Id),
-	Constraint ForeignKey_CoverImage_UserId foreign key (UserId)
-		references [dbo].[Users](Id) on update cascade on delete cascade,
-	Constraint ForeignKey_CoverImage_VideoId foreign key(VideoId)
-		references [dbo].[Videos](Id)
-); 
-
 
 Create table Subscribers (
 	Id int identity(1,1) NOT NULL,
@@ -267,5 +222,14 @@ Create table Comments(
 		references [dbo].[Likes](Id)
 );
 
+create table JasonWebTokens
+(
+        Id int identity(1,1) not null, 
+		UserId int not null,
+        Token text not null,
+        Expiration datetime not null, 
 
-
+		Constraint PrimaryKey_JasonWebTokens_Id primary key(Id),
+		Constraint ForeignKey_JasonWebTokens_UserId foreign key(UserId)
+			references [dbo].[Users](Id)
+);
