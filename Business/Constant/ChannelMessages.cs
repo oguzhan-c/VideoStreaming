@@ -7,6 +7,7 @@
         public static string ThisChannelNameExist = "This Channel Name Exist";
         public static string ThisChannelAlreadyDeleted = "This Channel Already Deleted";
         public static string ThisChannelAlreadyExist = "This Channel Already Exist";
+        public static string ThisChannelPhotoAlreadyExist = "This Channel Photo Already Exist";
     }
 
 }

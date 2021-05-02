@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using Core.CrossCuttingConcerns.Caching;
 using Core.CrossCuttingConcerns.Caching.Microsoft;
+using Core.Utilities.Helpers.FileHelpers;
+using Core.Utilities.Helpers.FileHelpers.FileOnDiskManager;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +19,7 @@ namespace Core.DependencyResolvers
             //Yerine geçilen cach yapılandırmasını yazmak.
             serviceCollection.AddSingleton<ICacheManager, MemoryCacheManager>();
             serviceCollection.AddSingleton<Stopwatch>(); //injection için yazıldı
-
+            serviceCollection.AddSingleton<IFileSystem, FileOnDiskManager>();            
         }
     }
 }

@@ -73,7 +73,6 @@ namespace Business.Concrete
              return new ErrorResult(DislikeMessages.ThisDislikeDoNotExist);
          }
 
-         [SecuredOperation("User/Root")]
          public IResult Add(Dislike dislike)
          {
 

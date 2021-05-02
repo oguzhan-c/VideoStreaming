@@ -2,8 +2,11 @@
 using System.Linq;
 using Business.Abstruct;
 using Business.Constant;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrute;
 using Core.Utilities.BusinessRules;
+using Core.Utilities.Helpers.FileHelpers;
 using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
 using Core.Utilities.Security.Hashing;
@@ -25,8 +28,9 @@ namespace Business.Concrete
         private readonly IUserOperationClaimService _userOperationClaimService;
         private readonly IChannelService _channelService;
         private readonly IAuthDal _authDal;
+        private IProfilePictureService _profilePictureService;
 
-        public AuthManager(ITokenHelper tokenHelper, IUserService userService, ICommunicationService communicationService, IUserDetailService userDetailService, IOperationClaimService operationClaimService, IUserOperationClaimService userOperationClaimService, IChannelService channelService, IAuthDal authDal)
+        public AuthManager(ITokenHelper tokenHelper, IUserService userService, ICommunicationService communicationService, IUserDetailService userDetailService, IOperationClaimService operationClaimService, IUserOperationClaimService userOperationClaimService, IChannelService channelService, IAuthDal authDal, IFileSystem fileSystem, IProfilePictureService profilePictureService)
         {
             _tokenHelper = tokenHelper;
             _userService = userService;
@@ -36,8 +40,10 @@ namespace Business.Concrete
             _userOperationClaimService = userOperationClaimService;
             _channelService = channelService;
             _authDal = authDal;
+            _profilePictureService = profilePictureService;
         }
 
+        [ValidationAspect(typeof(RegisterValidator))]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             HashingHelper.CreatepasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -75,7 +81,8 @@ namespace Business.Concrete
                 DateOfJoin = DateTime.Now,//Direkt kayıt olduğu zaman atanacak
                 Gender = userForRegisterDto.Gender,
                 IdentityNumber = userForRegisterDto.IdentityNumber,
-                RecoveryEmail = userForRegisterDto.RecoveryEmail
+                RecoveryEmail = userForRegisterDto.RecoveryEmail,
+                PhotoPath = "DefaultPhoto"
             };
             _userDetailService.Add(userDetail);
 
@@ -83,8 +90,8 @@ namespace Business.Concrete
             {
                 UserId = user.Id,
                 ChannelName = $"{user.FirstName} {user.LastName}",
-                ChannelPhotoPath = "a",
                 InstallationDate = userDetail.DateOfJoin,
+                ChannelPhotoPath = "defaultPhoto",
                 Description = $"This Channel Owner Name is {user.FirstName} {user.LastName}.This Channel Build on {userDetail.DateOfJoin}",
                 UpdateDate = DateTime.Now
             };
@@ -97,8 +104,6 @@ namespace Business.Concrete
                 UserId = user.Id,
                 OperationClaimId = _operationClaimService.GetDefaultClaims("User").Data[0].Id
             };
-
-            _userOperationClaimService.Add(userOperationClaim);
 
             return new SuccessDataResult<User>(user);
         }

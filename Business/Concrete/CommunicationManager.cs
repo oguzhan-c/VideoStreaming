@@ -74,7 +74,6 @@ namespace Business.Concrete
             return new ErrorResult(CommunicationMessages.ThisCommunicationDoNotExist);
         }
 
-        [SecuredOperation("User/Root")]
         public IResult Add(Communication communication)
         {
             IResult result = BusinessRule.Run

@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using Core.Entities;
 using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
 using Microsoft.AspNetCore.Http;
 
 namespace Core.Utilities.Helpers.FileHelpers.FileOnDiskManager
 {
-    public static  class FileOnDiskManager 
+    public class FileOnDiskManager : IFileSystem
     {
-        public static string Add(IFormFile formFile, string path)
+        private IFileSystem _fileSystemImplementation;
+
+        public string Add(IFormFile formFile, string path)
         {
             var result = NewFilePath(formFile, path);
 
@@ -28,7 +32,7 @@ namespace Core.Utilities.Helpers.FileHelpers.FileOnDiskManager
             }
         }
 
-        public static IResult Delete(string sourcePath)
+        public IResult Delete(string sourcePath)
         {
             try
             {
@@ -41,7 +45,7 @@ namespace Core.Utilities.Helpers.FileHelpers.FileOnDiskManager
             return new SuccessResult();
         }
 
-        public static string Update(IFormFile formFile, String oldSourcePath, string path)
+        public string Update(IFormFile formFile, String oldSourcePath, string path)
         {
             try
             {
@@ -66,7 +70,6 @@ namespace Core.Utilities.Helpers.FileHelpers.FileOnDiskManager
 
         private static string NewFilePath(IFormFile formFile, string sourcePath)
         {
-
 
             var rootPath = Environment.CurrentDirectory + @"\wwwroot\" + sourcePath;
 

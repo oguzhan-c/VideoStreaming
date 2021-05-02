@@ -84,7 +84,7 @@ namespace WebAPI.Controllers
         [HttpPost("addvideothumbnail")]
         public IActionResult AddVideoThumbnail([FromForm(Name = "thumbnailFile")] IFormFile thumbnailFile, [FromForm] int id)
         {
-            var result = _videoService.AddVideoFile(thumbnailFile, id);
+            var result = _videoService.AddVideoThumbnail(thumbnailFile, id);
 
             if (result.Succcess)
             {

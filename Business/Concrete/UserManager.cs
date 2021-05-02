@@ -21,7 +21,6 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
-        [SecuredOperation("User/Root")]
         public IResult Add(User user)
         {
             IResult result = BusinessRule.Run
@@ -84,7 +83,6 @@ namespace Business.Concrete
 
         }
 
-        [SecuredOperation("Root")]
         public IDataResult<List<User>> GetAll()
         { 
             IResult result = BusinessRule.Run

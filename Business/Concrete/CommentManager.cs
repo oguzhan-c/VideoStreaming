@@ -20,7 +20,6 @@ namespace Business.Concrete
             _commentDal = commentDal;
         }
 
-        [SecuredOperation("User/Root")]
         public IDataResult<List<Comment>> GetAll()
         {
             IResult result = BusinessRule.Run

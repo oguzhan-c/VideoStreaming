@@ -24,7 +24,7 @@ namespace Business.Concrete
             _userService = userService;
         }
 
-        [SecuredOperation("Root")]
+        [SecuredOperation("/UserRoot")]
         public IDataResult<List<Subscriber>> GetAll()
         {
             IResult result = BusinessRule.Run
@@ -52,7 +52,7 @@ namespace Business.Concrete
 
             return new SuccessDataResult<List<Subscriber>>(_subscriberDal.GetAll(s => s.UserId == id));
         }
-        [SecuredOperation("Root")]
+        [SecuredOperation("User/Root")]
         public IDataResult<List<Subscriber>> GetByChannelId(int id)
         {
             IResult result = BusinessRule.Run
@@ -79,7 +79,7 @@ namespace Business.Concrete
             return new ErrorResult(SubscriberMessages.ThisSubscribersDoNotExist);
         }
 
-
+        [SecuredOperation("User/Root")]
         public IDataResult<Subscriber> GetById(int id)
         {
             IResult result = BusinessRule.Run

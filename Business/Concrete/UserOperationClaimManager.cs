@@ -79,7 +79,6 @@ namespace Business.Concrete
             return new ErrorResult(UserOperationClaimMessages.ThisUserOperationClaimDoNotExist);
         }
 
-        [SecuredOperation("User/Root")]
         public IResult Add(UserOperationClaim userOperationClaim)
         {
             IResult result = BusinessRule.Run
@@ -111,7 +110,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [SecuredOperation("User/Root")]
+        [SecuredOperation("Root")]
         public IResult Delete(int id)
         {
             var deleteToUSerOperationClaim = _userOperationClaimDal.Get(uoc => uoc.Id == id);
@@ -130,7 +129,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [SecuredOperation("User/Root")]
+        [SecuredOperation("Root")]
         public IDataResult<List<OperationClaim>> GetByUser(int userId)
         {
             IResult result = BusinessRule.Run

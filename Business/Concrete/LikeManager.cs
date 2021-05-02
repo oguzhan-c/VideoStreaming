@@ -85,7 +85,6 @@ namespace Business.Concrete
             return new ErrorResult(LikeMessages.ThisLikeDoNotExist);
         }
 
-        [SecuredOperation("User/Root")]
         public IResult Add(Like like)
         {
             IResult result = BusinessRule.Run

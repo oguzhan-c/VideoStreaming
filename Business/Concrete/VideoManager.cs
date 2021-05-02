@@ -5,6 +5,7 @@ using Business.Abstruct;
 using Business.BusinessAspects.Autofac;
 using Business.Constant;
 using Core.Utilities.BusinessRules;
+using Core.Utilities.Helpers.FileHelpers;
 using Core.Utilities.Helpers.FileHelpers.FileOnDiskManager;
 using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
@@ -21,14 +22,16 @@ namespace Business.Concrete
         private readonly IChannelService _channelService;
         private string _videoPath = "Videos";
         private string _thumbnailPath = "Thumbnails";
+        private readonly IFileSystem _fileSystem;
 
 
 
-        public VideoManager(IVideoDal videoDal, IChannelService channelService, IUserService userService)
+        public VideoManager(IVideoDal videoDal, IChannelService channelService, IUserService userService, IFileSystem fileSystem)
         {
             _videoDal = videoDal;
             _channelService = channelService;
             _userService = userService;
+            _fileSystem = fileSystem;
         }
 
         public IDataResult<List<Video>> GetAll()
@@ -162,7 +165,7 @@ namespace Business.Concrete
 
             var selectedVideo = _videoDal.Get(v => v.Id == id);
 
-            selectedVideo.VideoPath = FileOnDiskManager.Add(videoFile, _videoPath);
+            selectedVideo.VideoPath = _fileSystem.Add(videoFile, _videoPath);
             selectedVideo.Date = DateTime.Now;
 
             _videoDal.Add(selectedVideo);
@@ -185,7 +188,7 @@ namespace Business.Concrete
 
             var selectedVideo = _videoDal.Get(v => v.Id == id);
 
-            selectedVideo.VideoPath = FileOnDiskManager.Add(thumbnailFile, _thumbnailPath);
+            selectedVideo.VideoPath = _fileSystem.Add(thumbnailFile, _thumbnailPath);
             selectedVideo.Date = DateTime.Now;
 
             _videoDal.Add(selectedVideo);
@@ -221,8 +224,8 @@ namespace Business.Concrete
 
             var videoToUpdate = _videoDal.Get(v => v.Id == video.Id);
 
-            video.VideoPath = FileOnDiskManager.Update(videoFile, videoToUpdate.VideoPath, _videoPath);
-            video.ThumbnailPath = FileOnDiskManager.Update(thumbnailFile, videoToUpdate.ThumbnailPath, _thumbnailPath);
+            video.VideoPath = _fileSystem.Update(videoFile, videoToUpdate.VideoPath, _videoPath);
+            video.ThumbnailPath = _fileSystem.Update(thumbnailFile, videoToUpdate.ThumbnailPath, _thumbnailPath);
             video.Date = videoToUpdate.Date;
             videoToUpdate.UpdateDate = DateTime.Now;
 
@@ -245,8 +248,8 @@ namespace Business.Concrete
 
             var deleteToVideo = _videoDal.Get(v => v.Id == id);
 
-            FileOnDiskManager.Delete(deleteToVideo.VideoPath);
-            FileOnDiskManager.Delete(deleteToVideo.ThumbnailPath);
+            _fileSystem.Delete(deleteToVideo.VideoPath);
+            _fileSystem.Delete(deleteToVideo.ThumbnailPath);
 
             _videoDal.Delete(deleteToVideo);
 

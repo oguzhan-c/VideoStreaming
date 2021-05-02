@@ -1,4 +1,6 @@
-﻿using Core.Utilities.Results.Abstruct;
+﻿using System.Security.Authentication.ExtendedProtection;
+using Core.Entities;
+using Core.Utilities.Results.Abstruct;
 using Microsoft.AspNetCore.Http;
 
 namespace Core.Utilities.Helpers.FileHelpers

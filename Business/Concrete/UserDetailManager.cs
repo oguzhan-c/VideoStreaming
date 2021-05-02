@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using Business.Abstruct;
 using Business.Constant;
@@ -9,19 +10,24 @@ using DataAccess.Abstruct;
 using Entities.Concrete;
 using System.Linq;
 using Business.BusinessAspects.Autofac;
+using Core.Utilities.Helpers.FileHelpers;
+using Microsoft.AspNetCore.Http;
 
 namespace Business.Concrete
 {
     class UserDetailManager : IUserDetailService
     {
         private readonly IUserDetailDal _userDetailDal;
+        private readonly IUserService _userService;
+        private string _path = "ProfilePhotos";
+        private IFileSystem _fileSystem;
 
-        public UserDetailManager(IUserDetailDal userDetailDal)
+        public UserDetailManager(IUserDetailDal userDetailDal, IUserService userService, IFileSystem fileSystem)
         {
             _userDetailDal = userDetailDal;
-        }
-
-        [SecuredOperation("User/Root")]
+            _userService = userService;
+            _fileSystem = fileSystem;
+        } 
         public IDataResult<List<UserDetail>> GetAll()
         {
             IResult result = BusinessRule.Run
@@ -47,7 +53,6 @@ namespace Business.Concrete
             return new ErrorResult(UserDetailMessages.UsersDoNotExist);
         }
 
-        [SecuredOperation("User/Root")]
         public IResult Add(UserDetail userDetail)
         {
             IResult result = BusinessRule.Run
@@ -59,9 +64,47 @@ namespace Business.Concrete
                 return result;
             }
 
+            userDetail.PhotoPath = "DefaultPhoto";
+
             _userDetailDal.Add(userDetail);
             return new SuccessResult();
         }
+
+        [SecuredOperation("User/Root")]
+        public IResult AddProfilePhoto(IFormFile photoFile, int id)
+        {
+            var selectedPhoto = _userDetailDal.Get(ud => ud.Id == id);
+
+            IResult result = BusinessRule.Run
+                (
+                    _userService.CheckIfUserExist(selectedPhoto.UserId),
+                    CheckIfProfilePhotoAlreadyExist(selectedPhoto.Id)
+                );
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            selectedPhoto.PhotoPath = _fileSystem.Add(photoFile, _path);
+
+            _userDetailDal.Add(selectedPhoto);
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfProfilePhotoAlreadyExist(int selectedPhotoId)
+        {
+            var result = _userDetailDal.Get(ud => ud.Id == selectedPhotoId).PhotoPath.Any();
+
+            if (result)
+            {
+                return new ErrorResult(UserDetailMessages.ThisProfilePhotoAlreadyExist);
+            }
+
+            return new SuccessResult();
+        }
+
 
         private IResult CheckIfUserDetailAlreadyExist(int userDetailId)
         {
@@ -131,19 +174,63 @@ namespace Business.Concrete
             return new ErrorResult(UserDetailMessages.UserDetailDoNotExist);
         }
 
-        [SecuredOperation("Root")]
         public IDataResult<UserDetail> GetById(int id)
         {
             IResult result = BusinessRule.Run
                 (
-                    CheckIfUserDetailExist(id)
+                    CheckIfUserDetailExist(id),
+                    CheckIfProfilePhotoEmpty(_userDetailDal.Get(ud => ud.Id == id),_path)
                 );
             if (result != null)
             {
                 return new ErrorDataResult<UserDetail>(result.Message);
             }
 
-            return new SuccessDataResult<UserDetail>(_userDetailDal.Get(ud => ud.Id == id));
+            return new SuccessDataResult<UserDetail>(CheckIfProfilePhotoEmpty(_userDetailDal.Get(ud => ud.Id == id), _path).Data);
+        }
+
+        public IDataResult<UserDetail> GetByUserId(int userId)
+        {
+            IResult result = BusinessRule.Run
+                (
+                    _userService.CheckIfUserExist(userId)
+                );
+
+            if (result != null)
+            {
+                return new ErrorDataResult<UserDetail>(UserMessages.UserDoNotExist);
+            }
+
+            return new SuccessDataResult<UserDetail>(_userDetailDal.Get(ud => ud.UserId == userId));
+        }
+
+
+        IDataResult<UserDetail> CheckIfProfilePhotoEmpty(UserDetail addedUserDetail, string path)
+        {
+            if (!addedUserDetail.PhotoPath.Equals("DefaultPhoto"))
+            {
+                return new SuccessDataResult<UserDetail>(_userDetailDal.Get(ud => ud.Id == addedUserDetail.Id));
+            }
+
+            var choseSex = addedUserDetail.Gender;
+
+            UserDetail userDetail = new UserDetail();
+
+            userDetail.Id = addedUserDetail.Id;
+            userDetail.Gender = addedUserDetail.Gender;
+            userDetail.DateOfJoin = addedUserDetail.DateOfJoin;
+            userDetail.UserId = addedUserDetail.UserId;
+            userDetail.RecoveryEmail = addedUserDetail.RecoveryEmail;
+            userDetail.DateOfBorn = addedUserDetail.DateOfBorn;
+            userDetail.IdentityNumber = addedUserDetail.IdentityNumber;
+
+            if (choseSex.Equals("Male"))
+            {
+                userDetail.PhotoPath = $@"wwwroot\{path}\defaultMaleProfilePhoto";
+            }
+            userDetail.PhotoPath = $@"wwwroot\{path}\defaultFemaleProfilePhoto";
+
+            return new SuccessDataResult<UserDetail>(userDetail);
         }
     }
 

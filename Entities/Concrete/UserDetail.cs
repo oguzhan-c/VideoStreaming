@@ -15,5 +15,6 @@ namespace Entities.Concrete
         public DateTime DateOfBorn { get; set; }
         public string RecoveryEmail { get; set; }
         public DateTime DateOfJoin { get; set; }
+        public string PhotoPath { get; set; }
     }
 }

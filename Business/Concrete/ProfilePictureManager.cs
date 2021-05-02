@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Business.Abstruct;
 using Core.Utilities.BusinessRules;
-using Core.Utilities.Helpers.FileHelpers;
 using Core.Utilities.Helpers.FileHelpers.FileOnDiskManager;
 using Core.Utilities.Results.Abstruct;
 using Core.Utilities.Results.Concrute;
@@ -12,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using System.Linq;
 using Business.BusinessAspects.Autofac;
 using Business.Constant;
+using Core.Utilities.Helpers.FileHelpers;
 
 namespace Business.Concrete
 {
@@ -20,14 +20,17 @@ namespace Business.Concrete
         private readonly IProfilePictureDal _profilePictureDal;
         private readonly IUserService _userService;
         private readonly string _path = "ProfilePictures";
+        private readonly IUserDetailService _userDetailService;
+        private readonly IFileSystem _fileSystem;
 
-        public ProfilePictureManager(IProfilePictureDal profilePictureDal, IUserService userService)
+        public ProfilePictureManager(IProfilePictureDal profilePictureDal, IUserService userService, IUserDetailService userDetailService, IFileSystem fileSystem)
         {
             _profilePictureDal = profilePictureDal;
             _userService = userService;
+            _userDetailService = userDetailService;
+            _fileSystem = fileSystem;
         }
 
-        [SecuredOperation("Root")]
         public IDataResult<List<ProfilePicture>> GetAll()
         {
             IResult result = BusinessRule.Run
@@ -53,22 +56,23 @@ namespace Business.Concrete
             return new ErrorResult(ProfilePhotoMessages.ThisProfilePhotosDoNotExist);
         }
 
-        [SecuredOperation("Root")]
         public IDataResult<ProfilePicture> GetById(int id)
         {
+            var selectedPhoto = _profilePictureDal.Get(pf => pf.Id == id);
+
             IResult result = BusinessRule.Run
                 (
-                    CheckIfProfilePhotoExist(id)
+                    CheckIfProfilePhotoExist(id),
+                    CheckIfProfilePhotoEmpty(selectedPhoto,_path)
                 );
             if (result != null)
             {
                 return new ErrorDataResult<ProfilePicture>(result.Message);
             }
 
-            return new SuccessDataResult<ProfilePicture>(_profilePictureDal.Get(pf => pf.Id == id));
+            return new SuccessDataResult<ProfilePicture>(selectedPhoto);
         }
 
-        [SecuredOperation("User/Root")]
         public IDataResult<List<ProfilePicture>> GetByUserId(int id)
         {
             IResult result = BusinessRule.Run
@@ -84,7 +88,6 @@ namespace Business.Concrete
             return new SuccessDataResult<List<ProfilePicture>>(_profilePictureDal.GetAll(pp=>pp.UserId == id));
         }
 
-        [SecuredOperation("User/Root")]
         public IResult Add(IFormFile profilePhotoFile, ProfilePicture profilePicture)
         {
             IResult result = BusinessRule.Run
@@ -97,7 +100,7 @@ namespace Business.Concrete
                 return result;
             }
 
-            profilePicture.PicturePath = FileOnDiskManager.Add(profilePhotoFile, _path);
+            profilePicture.PicturePath = _fileSystem.Add(profilePhotoFile, _path);
             profilePicture.Date = DateTime.Now;                                                                                                                                     
             _profilePictureDal.Add(profilePicture);
 
@@ -140,7 +143,7 @@ namespace Business.Concrete
 
             var deleteToProfilePicture = _profilePictureDal.Get(pf => pf.Id == id);
 
-            FileOnDiskManager.Delete(deleteToProfilePicture.PicturePath);
+            _fileSystem.Delete(deleteToProfilePicture.PicturePath);
 
             _profilePictureDal.Delete(deleteToProfilePicture);
 
@@ -163,7 +166,7 @@ namespace Business.Concrete
 
             var profilePictureToUpdate = _profilePictureDal.Get(pp => pp.Id == profilePicture.Id);
 
-            profilePicture.PicturePath = FileOnDiskManager.Update(profilePhotoFile, profilePictureToUpdate.PicturePath, _path);
+            profilePicture.PicturePath = _fileSystem.Update(profilePhotoFile, profilePictureToUpdate.PicturePath, _path);
             profilePicture.Date = DateTime.Now;
 
             _profilePictureDal.Update(profilePicture);
@@ -183,5 +186,24 @@ namespace Business.Concrete
             return new ErrorResult(ProfilePhotoMessages.ThisProfilePhotoAlreadyDeleted);
         }
 
+
+        IResult CheckIfProfilePhotoEmpty(ProfilePicture addedProfilePicture, string path)
+        {
+            var choseSex = _userDetailService.GetByUserId(addedProfilePicture.UserId).Data.Gender; 
+
+            ProfilePicture profilePicture = new ProfilePicture();
+
+            profilePicture.Id = addedProfilePicture.Id;
+            profilePicture.Date = addedProfilePicture.Date;
+            profilePicture.UserId = addedProfilePicture.UserId;
+
+            if (choseSex.Equals("Male"))
+            {
+                profilePicture.PicturePath = $@"wwwroot\{path}\defaultMaleProfilePhoto";
+            }
+            profilePicture.PicturePath = $@"wwwroot\{path}\defaultFemaleProfilePhoto";
+
+            return new SuccessResult();
+        }
     }
 }

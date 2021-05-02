@@ -6,5 +6,6 @@
         public static string UserDetailAlreadyExist = "User Already Exist";
         public static string UserDetailAlreadyDeleted = "User Detail Already Deleted";
         public static string UserDetailDoNotExist = "USer Detail Do Not Exist";
+        public static string ThisProfilePhotoAlreadyExist = "This Profile Photo Already Exist";
     }
 }

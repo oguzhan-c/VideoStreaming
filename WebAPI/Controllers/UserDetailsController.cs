@@ -1,5 +1,6 @@
 ﻿using Business.Abstruct;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -68,6 +69,19 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(result);
             }
+        }
+
+        [HttpPost("addProfilePhoto")]
+        public IActionResult AddProfilePhoto([FromForm(Name = "profilePhoto")] IFormFile profilePhotoFile, [FromForm] int id)
+        {
+            var result = _userDetailService.AddProfilePhoto(profilePhotoFile, id);
+
+            if (result.Succcess)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
         }
         [HttpPut("update")]
         public IActionResult Update(UserDetail userDetail)
