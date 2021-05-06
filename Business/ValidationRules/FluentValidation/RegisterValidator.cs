@@ -13,15 +13,15 @@ namespace Business.ValidationRules.FluentValidation
         public RegisterValidator()
         {
 
-            RuleFor(r => r.Password).Must(PasswordRules)
-                .WithMessage("Password must contain special character letters and numbers!");
+            //RuleFor(r => r.Password).Must(PasswordRules)
+                //.WithMessage("Password must contain special character letters and numbers!");
 
-            RuleFor(r => r.RecoveryEmail).Must(DenyTurkishCharacter).WithMessage("You can not use turkish characters!");
-            RuleFor(r => r.Password).Must(DenyTurkishCharacter).WithMessage("You can not use turkish characters!");
-            RuleFor(r => r.Address1).Must(DenyTurkishCharacter).WithMessage("You can not use turkish characters!");
-            RuleFor(r => r.Address2).Must(DenyTurkishCharacter).WithMessage("You can not use turkish characters!");
-            RuleFor(r => r.RecoveryEmail).Must(DenyTurkishCharacter).WithMessage("You can not use turkish characters!");
-            RuleFor(r => r.RecoveryEmail).Must(DenyTurkishCharacter).WithMessage("You can not use turkish characters!");
+            //RuleFor(r => r.RecoveryEmail).Must(DenyTurkishCharacter).WithMessage("You can not use turkish characters!");
+            //RuleFor(r => r.Password).Must(DenyTurkishCharacter).WithMessage("You can not use turkish characters!");
+           //// RuleFor(r => r.Address1).Must(DenyTurkishCharacter).WithMessage("You can not use turkish characters!");
+           ///RuleFor(r => r.Address2).Must(DenyTurkishCharacter).WithMessage("You can not use turkish characters!");
+           // RuleFor(r => r.RecoveryEmail).Must(DenyTurkishCharacter).WithMessage("You can not use turkish characters!");
+            //RuleFor(r => r.RecoveryEmail).Must(DenyTurkishCharacter).WithMessage("You can not use turkish characters!");
         }
 
         //Kullanıcının Türkçe Karakter Kullanmasının önüne geçildi.

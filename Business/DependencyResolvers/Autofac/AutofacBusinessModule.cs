@@ -31,7 +31,6 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<DislikeManager>().As<IDislikeService>().SingleInstance();
             builder.RegisterType<LikeManager>().As<ILikeService>().SingleInstance();
             builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().SingleInstance();
-            builder.RegisterType<ProfilePictureManager>().As<IProfilePictureService>().SingleInstance();
             builder.RegisterType<SubscriberManager>().As<ISubscriberService>().SingleInstance();
             builder.RegisterType<UserDetailManager>().As<IUserDetailService>().SingleInstance();
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
@@ -45,7 +44,6 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfDislikeDal>().As<IDislikeDal>().SingleInstance();
             builder.RegisterType<EfLikeDal>().As<ILikeDal>().SingleInstance();
             builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().SingleInstance();
-            builder.RegisterType<EfProfilePictureDal>().As<IProfilePictureDal>().SingleInstance();
             builder.RegisterType<EfSubscriberDal>().As<ISubscriberDal>().SingleInstance();
             builder.RegisterType<EfUserDetailDal>().As<IUserDetailDal>().SingleInstance();
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();

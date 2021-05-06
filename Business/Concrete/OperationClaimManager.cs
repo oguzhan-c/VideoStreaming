@@ -67,7 +67,7 @@ namespace Business.Concrete
         public IDataResult<List<OperationClaim>> GetDefaultClaims(string defaultClaim)
         {
             return new SuccessDataResult<List<OperationClaim>>(_operationClaimDal.GetDefaultClaims(defaultClaim).Data);
-        }
+        }                                                                                                                                                                                                           
 
         [SecuredOperation("Root")]
         public IDataResult<List<OperationClaim>> GetByUser(int userId)

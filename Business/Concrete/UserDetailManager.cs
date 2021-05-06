@@ -20,7 +20,7 @@ namespace Business.Concrete
         private readonly IUserDetailDal _userDetailDal;
         private readonly IUserService _userService;
         private string _path = "ProfilePhotos";
-        private IFileSystem _fileSystem;
+        private readonly IFileSystem _fileSystem;
 
         public UserDetailManager(IUserDetailDal userDetailDal, IUserService userService, IFileSystem fileSystem)
         {
@@ -63,8 +63,6 @@ namespace Business.Concrete
             {
                 return result;
             }
-
-            userDetail.PhotoPath = "DefaultPhoto";
 
             _userDetailDal.Add(userDetail);
             return new SuccessResult();

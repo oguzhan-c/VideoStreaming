@@ -61,6 +61,8 @@ create table UserDetails(
 	DateOfBorn datetime not null,
 	RecoveryEmail varchar(50) null,
 	DateOfJoin datetime default current_Timestamp not null,--Backend de registerDTO su oluþturunca orada register olduðu zamaný direk olarak buna ata
+	PhotoPath varchar(50) not null,
+
 
 	Constraint PrimaryKey_UserDetails_Id primary key (Id),
 	Constraint ForeignKey_UserDetails_UserId foreign key (UserId)
@@ -85,18 +87,6 @@ create table Communications (
 		references [dbo].[Users](Id) on update cascade on delete cascade
 );
 
-
-create table ProfilePicture(
-	Id int identity(1,1) not null,
-	UserId int not null,
-	PicturePath text not null,
-	Date datetime default current_Timestamp not null,--datetime.now yapýlacak
-
-	Constraint PrimaryKey_ProfilePicture_Id primary key(Id),
-	Constraint ForeignKey_ProfilePicture_UserId foreign key(UserId)
-		references [dbo].[Users](Id),
-
-);
 
 
 --Burada Tüm yetkiler belirtilecek
