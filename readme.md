@@ -206,7 +206,7 @@
     * Bu klasörün altında bulunan klasörlere belirlenen dosyalar yüklenecek.Örnek olarak video ,profil resmi gibi.
   * Controllers
     * Bu klasörün altında arayüz ile projenin haberleşmesini sağlayan kodların yazılı olduğu classlar bulunmaktadır.
-    
+
 # Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated.
@@ -225,7 +225,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Project Link: https://github.com/oguzhan-c/VideoStreaming
 
 ## Acknowledgements
-engindemirog
+<a href="https://github.com/engindemirog">engindemirog</a>
 
 
 [contributors-shield]: https://img.shields.io/github/contributors/oguzhan-c/VideoStreaming.svg?style=for-the-badge
