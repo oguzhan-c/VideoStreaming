@@ -153,59 +153,63 @@
 | Token            | text           | False       |                  |
 | Expiration       | datetime       | False       |                  | 
 
-</details><p></p>
+</details>
 
 ## Katmanlar
-### Business
-<details>
-  <summary>Toggle Content</summary> 
-  Abstruct
-    <summary>Toggle Content</summary> 
-        IAuthService
-        <summary>Toggle Content</summary>
-    <img src=>
-                <summary>Toggle Content</summary>         
-  BusinessAspects
-  <summary>Toggle Content</summary> 
-  Constant
-  <summary>Toggle Content</summary> 
-  DependencyResolvers
-  <summary>Toggle Content</summary> 
-  ValidationRules
-  <details>
-  <summary>Toggle Content</summary> 
-</details><p></p>
-
-</details><p></p>
-
-### Core
-<details>
-  <summary>Toggle Content</summary> 
-</details><p></p>
-
-### DataAccess
-<details>
-  <summary>Toggle Content</summary> 
-</details><p></p>
-
-### Entities
-<details>
-  <summary>Toggle Content</summary> 
-</details><p></p>
-
-### UiPreparation
-<details>
-  <summary>Toggle Content</summary> 
-</details><p></p>
-
-### WebAPI
-<details>
-  <summary>Toggle Content</summary> 
-</details><p></p>
-
+### Business : İş Katmanı
+  * Abstruct
+    * Mikroservis yaklaşımıyla yazılmış serviceler.
+  * BusinessAspects
+    * Authorization işlemi için yazılan aspect.Aspect:.net de çalışacak methodun ne zaman çalışmasını istediğimizde kullanılır.
+  * Concrete
+    * Manager classlarının bulunduğu klasör.Bu classlar sadece iş kodlarını içerir.
+  * Constant
+    * Kodlanan manager clasları için mesajların tutulduğu klasör.
+  * DependencyResolvers
+    * Autofac
+      * Dependency Injection yaparken kullanılır."builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance()" dediğimizde IAuthService kullandığımda aslında AuthManageri çağır ve onun tüm projeden erişilebilecek bir instance'ını oluştur demek isteriz.
+  * ValidationRules
+    * FluentValidation
+      * RegisterValidator
+        * Beliri kurallar koymak istediğimizde kullanılır.
+### Core : Tüm .net projelerinde geçerli kodların bulunduğu katman
+  * Aspects
+    * Autofac
+      * Business katmanındaki aspect ile aynı şekilde sadece burda farklı işlemler var.
+  * CrossCuttingConcerns
+    * Tüm uygulamada sıkça başvurulacak Caching , Validation gibi olayların
+      koddan ayrılması.Daha sonra AOP yardımı ile koda uygulanması.
+  * DataAcces
+    * Burada tüm programlarda bulunacak ekleme silme güncelleme gibi işlemler yapılmıştır daha sonra koddada göründüğü gibi DataAccess katmanında buradan faydalanılıp daha temiz ve solid'e uygun bir  kod yazılması sağlanmıştır.
+  * Entities
+    * Burada neredeyse tüm projelerde bulunacak user gibi entity sınıfları mevcuttur.
+  * Extensions
+    * Extension varolan kodda değişiklip yapıp onu kendimize göre yeniden formatlamaktır.Burdada sistemin kendisinde bulunan System.Security.Claims
+    daki Claim gerekli alaların daha kolay eklenmesini sağlamak için konfigrasyonlar yapılmıştır.
+  * Utilities 
+    * Burada JWT,dosya işlemlerini yapan classlar,Interceptor yani method çalışırken ne zaman ne yapılması gerekiyor gibi Projeye gerekli özellikleri kazandıran classlar mevcuttur.
+### DataAccess : Veritabanı ile ilgili kodların yazıldığı katman.
+  * Concrute 
+    * Burada Entity Fremawork ve hafızada veri yönetimini yapan classlar mevcuttur.
+  * Abstruct 
+   * Burada Classların ne yapıcağını söyleyen yani fonksiyonun örneğini bulunduran interfaceler mevcuttur.
+### Entities : Veritabanındaki nesnelerin kodlara döküldüğü katman.
+  * Concrute
+    * Daha öncede bahsettiğim gibi veritabanındaki nesnelerin kodda ki örnekleri burada bulunur.
+  * Dtos
+    * Dto (veri aktarım nesneleri), verileri katmanlar arasında taşımak için kullanılan bir veri kapsayıcısıdır.Bu yüzden Concrute deki classları kullanmak yerine veritabanında olmayan ama katmanlar arasında taşınması gereken bilgileri taşıyan dtolar kullanıldı.
+### UIPreparation : Arayüz kodlarını içeren katman.
+  * Bu katmanda sadece arayüz kodları bulunur.Örnek olarak CSS,Javascript gibi.
+  * Ayrıca bu katman WebAPI katmanı çalıştırıldıktan sonra Debug>Start New Instance diyerek çalıştırılacak.Çaşıştıktan sonra gerekli dosyalar indirilecek ve vscode uygulaması otomatik olarak açılacak ve arayüz kodlaması orada devam edecektir.
+### WebAPI : Arayüz ile projeyi birbirine bağlayarak verinin yönetilmesini sağlayan katman
+  * wwwroot
+    * Bu klasörün altında bulunan klasörlere belirlenen dosyalar yüklenecek.Örnek olarak video ,profil resmi gibi.
+  * Controllers
+    * Bu klasörün altında arayüz ile projenin haberleşmesini sağlayan kodların yazılı olduğu classlar bulunmaktadır.
+    
 # Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated.
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
