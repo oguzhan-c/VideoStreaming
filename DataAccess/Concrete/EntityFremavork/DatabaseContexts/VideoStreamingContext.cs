@@ -24,7 +24,6 @@ namespace DataAccess.Concrete.EntityFremavork.DatabaseContexts
         public DbSet<User> Users { get; set; }
         public DbSet<UserDetail> UserDetails { get; set; }
         public DbSet<Communication> Communications { get; set; }
-        public DbSet<ProfilePicture> ProfilePictures { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<Channel> Channels { get; set; }

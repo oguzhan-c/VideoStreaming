@@ -28,9 +28,8 @@ namespace Business.Concrete
         private readonly IUserOperationClaimService _userOperationClaimService;
         private readonly IChannelService _channelService;
         private readonly IAuthDal _authDal;
-        private IProfilePictureService _profilePictureService;
 
-        public AuthManager(ITokenHelper tokenHelper, IUserService userService, ICommunicationService communicationService, IUserDetailService userDetailService, IOperationClaimService operationClaimService, IUserOperationClaimService userOperationClaimService, IChannelService channelService, IAuthDal authDal, IFileSystem fileSystem, IProfilePictureService profilePictureService)
+        public AuthManager(ITokenHelper tokenHelper, IUserService userService, ICommunicationService communicationService, IUserDetailService userDetailService, IOperationClaimService operationClaimService, IUserOperationClaimService userOperationClaimService, IChannelService channelService, IAuthDal authDal, IFileSystem fileSystem)
         {
             _tokenHelper = tokenHelper;
             _userService = userService;
@@ -40,7 +39,6 @@ namespace Business.Concrete
             _userOperationClaimService = userOperationClaimService;
             _channelService = channelService;
             _authDal = authDal;
-            _profilePictureService = profilePictureService;
         }
 
         [ValidationAspect(typeof(RegisterValidator))]
@@ -81,7 +79,7 @@ namespace Business.Concrete
                 DateOfJoin = DateTime.Now,//Direkt kayıt olduğu zaman atanacak
                 Gender = userForRegisterDto.Gender,
                 IdentityNumber = userForRegisterDto.IdentityNumber,
-                RecoveryEmail = userForRegisterDto.RecoveryEmail,
+                RecoveryEmail = userForRegisterDto.RecoveryEmail, 
                 PhotoPath = "DefaultPhoto"
             };
             _userDetailService.Add(userDetail);
@@ -102,8 +100,10 @@ namespace Business.Concrete
             var userOperationClaim = new UserOperationClaim
             {
                 UserId = user.Id,
-                OperationClaimId = _operationClaimService.GetDefaultClaims("User").Data[0].Id
+                OperationClaimId = _operationClaimService.GetDefaultClaims("Default").Data[0].Id
             };
+
+            _userOperationClaimService.Add(userOperationClaim);
 
             return new SuccessDataResult<User>(user);
         }
