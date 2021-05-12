@@ -219,10 +219,10 @@ Contributions are what make the open source community such an amazing place to b
 
 # License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See <a href="https://github.com/oguzhan-c/VideoStreaming/blob/master/LICENSE.txt">LICENSE<a/> for more information.
 
 ## Contact
-Project Link: https://github.com/oguzhan-c/VideoStreaming
+Project Link: <a href="https://github.com/oguzhan-c/VideoStreaming">VideoStream<a/>
 
 ## Acknowledgements
 <a href="https://github.com/engindemirog">engindemirog</a>
