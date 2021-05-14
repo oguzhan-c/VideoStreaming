@@ -222,7 +222,7 @@ Contributions are what make the open source community such an amazing place to b
 Distributed under the MIT License. See <a href="https://github.com/oguzhan-c/VideoStreaming/blob/master/LICENSE.txt">LICENSE<a/> for more information.
 
 ## Contact
-### Project Link : <a href="https://github.com/oguzhan-c/VideoStreaming">VideoStream<a/>
+### Project Link : <a href="https://github.com/oguzhan-c/VideoStreaming">VideoStreaming<a/>
 ### Email : <a href="oguzhan.can.iletisim@gmail.com">oguzhan.can.iletisim@gmail.com<a/>
 
 ## Acknowledgements
