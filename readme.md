@@ -19,7 +19,7 @@
 ## Veritabanı Tabloları
 
 <details>
-  <summary>Toggle Content</summary>
+  <summary>Tablolar</summary>
 
 ### Users
 
