@@ -223,6 +223,7 @@ Distributed under the MIT License. See <a href="https://github.com/oguzhan-c/Vid
 
 ## Contact
 Project Link: <a href="https://github.com/oguzhan-c/VideoStreaming">VideoStream<a/>
+Email:<a href="oguzhan.can.iletisim@gmail.com">oguzhan.can.iletisim@gmail.com<a/>
 
 ## Acknowledgements
 <a href="https://github.com/engindemirog">engindemirog</a>
