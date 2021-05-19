@@ -66,7 +66,10 @@ namespace WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
-
+            
+            //"http://localhost:4200" bu adresten gelen tüm adreslere güveniyorum ve işlem yapmasına izin veriyorum demek.
+            app.UseCors(builder=>builder.withOrigins("http://localhost:4200").AllowAnyHeader());
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
