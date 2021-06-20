@@ -151,9 +151,13 @@ namespace Business.Concrete
 
         private IResult CheckIfVerifyAccount(string email)
         {
-            var result = _userService.GetByMail(email).Data;
-
-            if (result.Status == false)
+            var result = _userService.GetByMail(email);
+            if (result.Succcess == false )                                                                                                        
+            {
+                return new ErrorResult(UserMessages.UsersDoNotExist);
+            }
+            
+            if (result.Data.Status == false)
             {
                 return new ErrorResult(AuthMessages.ThisEmailDoesNotVerify);
             }
