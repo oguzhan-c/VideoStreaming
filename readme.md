@@ -198,9 +198,6 @@
     * Daha öncede bahsettiğim gibi veritabanındaki nesnelerin kodda ki örnekleri burada bulunur.
   * Dtos
     * Dto (veri aktarım nesneleri), verileri katmanlar arasında taşımak için kullanılan bir veri kapsayıcısıdır.Bu yüzden Concrute deki classları kullanmak yerine veritabanında olmayan ama katmanlar arasında taşınması gereken bilgileri taşıyan dtolar kullanıldı.
-### UIPreparation : Arayüz kodlarını içeren katman.
-  * Bu katmanda sadece arayüz kodları bulunur.Örnek olarak CSS,Javascript gibi.
-  * Ayrıca bu katman WebAPI katmanı çalıştırıldıktan sonra Debug>Start New Instance diyerek çalıştırılacak.Çaşıştıktan sonra gerekli dosyalar indirilecek ve vscode uygulaması otomatik olarak açılacak ve arayüz kodlaması orada devam edecektir.
 ### WebAPI : Arayüz ile projeyi birbirine bağlayarak verinin yönetilmesini sağlayan katman
   * wwwroot
     * Bu klasörün altında bulunan klasörlere belirlenen dosyalar yüklenecek.Örnek olarak video ,profil resmi gibi.
