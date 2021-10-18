@@ -14,6 +14,5 @@ namespace Business.Abstruct
         IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password);
         IDataResult<User> Login(UserForLoginDto userForLoginDto);
         IDataResult<AccessToken> CreateAccessToken(User user);
-        IResult LogOut(int userId);
     }
 }

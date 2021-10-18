@@ -18,10 +18,7 @@ namespace Core.Utilities.Results.Concrute
         public SuccessDataResult(String message):base(default,true,message)
         {
         }
-         
-        public SuccessDataResult():base(default,true)
-        {
-        }
+       
 
 
 

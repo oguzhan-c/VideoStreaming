@@ -41,20 +41,7 @@ namespace WebAPI.Controllers
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Succcess)
             {
-                userForLoginDto.IsActive = true;
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpDelete("logout")]
-        public IActionResult LogOut(int userId)
-        {
-            var result = _authService.LogOut(userId);
-
-            if (result.Succcess)
-            {
+                //userForLoginDto.IsActive = true;
                 return Ok(result);
             }
 

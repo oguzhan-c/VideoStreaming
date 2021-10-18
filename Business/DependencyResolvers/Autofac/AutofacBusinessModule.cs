@@ -37,7 +37,6 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>().SingleInstance();
             builder.RegisterType<VideoManager>().As<IVideoService>().SingleInstance();
             //EntityFremawork için instance 
-            builder.RegisterType<EfAuthDal>().As<IAuthDal>().SingleInstance();
             builder.RegisterType<EfChannelDal>().As<IChannelDal>().SingleInstance();
             builder.RegisterType<EfCommentDal>().As<ICommentDal>().SingleInstance();
             builder.RegisterType<EfCommunicationDal>().As<ICommunicationDal>().SingleInstance();

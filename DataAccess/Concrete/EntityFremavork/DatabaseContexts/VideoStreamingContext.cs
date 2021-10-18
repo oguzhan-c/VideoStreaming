@@ -14,9 +14,12 @@ namespace DataAccess.Concrete.EntityFremavork.DatabaseContexts
         {
             optionsBuilder.UseSqlServer
             (
-                @"Server= (localdb)\MSSQLLocalDB;
-                        Database=VideoStream;
-                        Trusted_Connection=true"
+                @"Server=127.0.0.1;
+                Database=VideoStreaming;
+                integrated security=false;
+                User Id=SA;
+                PASSWORD=MyPass@word"
+
             );
         }
         //Entities in the database are mapped to Entities in the entity class
@@ -32,6 +35,6 @@ namespace DataAccess.Concrete.EntityFremavork.DatabaseContexts
         public DbSet<Dislike> Dislikes { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<JasonWebToken> JasonWebTokens { get; set; }
+        public DbSet<Trend> Trends { get; set; }
     }
 }

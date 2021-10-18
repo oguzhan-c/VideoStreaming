@@ -27,9 +27,8 @@ namespace Business.Concrete
         private readonly IOperationClaimService _operationClaimService;
         private readonly IUserOperationClaimService _userOperationClaimService;
         private readonly IChannelService _channelService;
-        private readonly IAuthDal _authDal;
 
-        public AuthManager(ITokenHelper tokenHelper, IUserService userService, ICommunicationService communicationService, IUserDetailService userDetailService, IOperationClaimService operationClaimService, IUserOperationClaimService userOperationClaimService, IChannelService channelService, IAuthDal authDal, IFileSystem fileSystem)
+        public AuthManager(ITokenHelper tokenHelper, IUserService userService, ICommunicationService communicationService, IUserDetailService userDetailService, IOperationClaimService operationClaimService, IUserOperationClaimService userOperationClaimService, IChannelService channelService, IFileSystem fileSystem)
         {
             _tokenHelper = tokenHelper;
             _userService = userService;
@@ -38,14 +37,13 @@ namespace Business.Concrete
             _operationClaimService = operationClaimService;
             _userOperationClaimService = userOperationClaimService;
             _channelService = channelService;
-            _authDal = authDal;
         }
 
         [ValidationAspect(typeof(RegisterValidator))]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             HashingHelper.CreatepasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
-
+            
             var user = new User
             {
                 FirstName = userForRegisterDto.FirstName,
@@ -57,7 +55,7 @@ namespace Business.Concrete
             };
 
             _userService.Add(user);
-
+           
             var communication = new Communication
             {
                 UserId = user.Id,
@@ -100,7 +98,8 @@ namespace Business.Concrete
             var userOperationClaim = new UserOperationClaim
             {
                 UserId = user.Id,
-                OperationClaimId = _operationClaimService.GetDefaultClaims("Default").Data[0].Id
+                OperationClaimId = _operationClaimService.GetDefaultClaims("Default").Data[0].Id,
+               
             };
 
             _userOperationClaimService.Add(userOperationClaim);
@@ -136,19 +135,6 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(userToCheck.Data, UserMessages.SuccessfulLogin);
         }
 
-        public IResult LogOut(int userId)
-        {
-            var results = _authDal.GetAll(jwt=>jwt.UserId == userId);
-
-            foreach (var result in results)
-            {
-                _authDal.Delete(result);
-            }
-
-            return new SuccessResult();
-
-        }
-
         private IResult CheckIfVerifyAccount(string email)
         {
             var result = _userService.GetByMail(email);
@@ -169,15 +155,6 @@ namespace Business.Concrete
         {
             var claims = _userService.GetClaims(user.Id);
             var accessToken = _tokenHelper.createToken(user, claims.Data);
-
-            var jwt = new JasonWebToken
-            {
-                UserId = user.Id,
-                Token = accessToken.Token,
-                Expiration = accessToken.Expiration
-            };
-
-            _authDal.Add(jwt);
 
             return new SuccessDataResult<AccessToken>(accessToken, UserMessages.AccessTokenCreated);
         }
